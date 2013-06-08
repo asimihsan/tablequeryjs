@@ -1,6 +1,8 @@
 # tablequeryjs
 
-Use textual queries to filter tables.
+Use textual queries to filter tables. See the HTML example page online here:
+
+[http://www.asimihsan.com.s3-website-eu-west-1.amazonaws.com/tablequeryjs/test/basic_example.html](http://www.asimihsan.com.s3-website-eu-west-1.amazonaws.com/tablequeryjs/test/basic_example.html)
 
 ## Usage
 
