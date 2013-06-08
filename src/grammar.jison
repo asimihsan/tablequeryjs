@@ -77,7 +77,7 @@ literal
     :   STRING_LITERAL_S
             {$$ = $1.substring(1, $1.length - 1);}
     |   STRING_LITERAL_D
-            {$$ = $1.substring(0, $1.length - 1);}
+            {$$ = $1.substring(1, $1.length - 1);}
     |   IDENT
             {$$ = $1;}
     ;
