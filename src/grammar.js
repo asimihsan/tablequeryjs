@@ -101,7 +101,7 @@ case 8:this.$ = ["ILIKE", $$[$0-2].toLowerCase(), $$[$0]];
 break;
 case 9:this.$ = $$[$0].substring(1, $$[$0].length - 1);
 break;
-case 10:this.$ = $$[$0].substring(0, $$[$0].length - 1);
+case 10:this.$ = $$[$0].substring(1, $$[$0].length - 1);
 break;
 case 11:this.$ = $$[$0];
 break;
