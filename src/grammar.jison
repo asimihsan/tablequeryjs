@@ -8,6 +8,7 @@
 
 /* lexical grammar */
 %lex
+%options flex case-insensitive
 %%
 
 \s*\n\s*                  /* ignore */
@@ -19,6 +20,7 @@
 ")"                       return 'RPAREN';
 
 "not"                     return 'NOT';
+"!"                       return 'NOT';
 
 "in"                      return 'IN';
 ">="                      return 'GTE';
@@ -29,8 +31,11 @@
 "="                       return 'EQ';
 "like"                    return 'LIKE';
 "ilike"                   return 'ILIKE';
+
 "and"                     return 'AND';
+"&&"                      return 'AND';
 "or"                      return 'OR';
+"||"                      return 'OR';
 
 [A-Za-z0-9_\-\.]+         return 'IDENT';
 
