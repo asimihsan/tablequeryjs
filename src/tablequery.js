@@ -27,6 +27,7 @@ not ('first name' ilike mark or number = 2)
 
 (function(tablequery, $, undefined) {
     var table; // = $("table");
+    var table_tbody_rows;
     var table_search_text; // = $("#table_search_text");
     var table_search_text_control_group; // = table_search_text.closest(".control-group");
 
@@ -63,7 +64,7 @@ not ('first name' ilike mark or number = 2)
             if (left in table_headings) {
                 console.log("left value in table_headings.");
                 var column_index = table_headings[left];
-                return_value = table.find("tbody tr").filter(function(i) {
+                return_value = table_tbody_rows.filter(function(i) {
                     text = $(this).children()[column_index].textContent;
                     regexp_result = expr.test(text);
                     if (test_for_true) {
@@ -92,7 +93,7 @@ not ('first name' ilike mark or number = 2)
                 // I do I can't get elements to match under ===. Why?
                 // return_value = _.difference($("table tbody tr"), left_trees);
 
-                return_value = _.filter(table.find("tbody tr"), function(el) {
+                return_value = _.filter(table_tbody_rows, function(el) {
                     var el_in_left_trees = false;
                     _.each(left_trees, function(el2) {
                         if ($(el).index() == $(el2).index()) {
@@ -105,12 +106,13 @@ not ('first name' ilike mark or number = 2)
         }
         if (!return_value) {
             console.log("no return value, return all rows.");
-            return_value = table.find("tbody tr");
+            return_value = table_tbody_rows;
         }
         console.log("returning")
         console.log(return_value);
         return return_value;
     }
+    get_rows_to_display = _.memoize(get_rows_to_display);
 
     parse_search_text = function(search_text) {
         var is_parse_successful = true;
@@ -137,24 +139,23 @@ not ('first name' ilike mark or number = 2)
         }        
     }
 
-    maybe_update_table_headings = function() {
-        if (_.isEmpty(table_headings)) {
-            $.map(table.find("th"), function(el, i) {
-                table_headings[el.textContent.toLowerCase()] = i; 
-            });
-            console.log(table_headings);
-        }            
+    update_table_headings = function() {    
+        $.map(table.find("th"), function(el, i) {
+            table_headings[el.textContent.toLowerCase()] = i; 
+        });
+        console.log(table_headings);
     }
 
     tablequery.set_table = function(selector) {
         table = $(selector);
+        table_tbody_rows = table.find("tbody tr");
+        update_table_headings();
     }
 
     tablequery.set_table_search_text = function(selector) {
         table_search_text = $(selector);
         table_search_text_control_group = table_search_text.closest(".control-group");
         table_search_text.keyup(function(e) {
-            maybe_update_table_headings();
             if ($(this).val() == previous_search_text) {
                 return false;
             }
@@ -162,18 +163,26 @@ not ('first name' ilike mark or number = 2)
             update_table_search_text_warning(rv.rc);
             if (rv.rc) {
                 var rows_to_display = get_rows_to_display(rv.parsed_query);
-                table.find("tbody tr").hide();
+                table_tbody_rows.hide();
                 _.each(rows_to_display, function(row) { $(row).show(); });
                 console.log(rows_to_display);
             } else {
-                table.find("tbody tr").show();
+                table_tbody_rows.show();
             }
             previous_search_text = $(this).val();
+            if (Modernizr.localstorage) {
+                localStorage.previous_search_text = previous_search_text;
+            }
         });
 
         table_search_text.keypress(function(e) {
            return (e.keyCode || e.which || e.charCode || 0) !== 13; 
         });
+
+        if (Modernizr.localstorage) {
+            table_search_text.val(localStorage.previous_search_text);
+            table_search_text.keyup();
+        }
     }
 
 }(window.tablequery = window.tablequery || {}, jQuery));
