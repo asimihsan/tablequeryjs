@@ -33,19 +33,32 @@ $(document).ready(function() {
         }
         if (!($.isArray(left))) {
             console.log("Child nodes.");
-            if (node_type == "EQ") {
-                var expr = new RegExp("^" + right + "$");
-            } else if (node_type == "ILIKE") {
-                var expr = new RegExp(right, "i");
-            } else {
-                var expr = new RegExp(right);
+            switch(node_type) {
+                case "EQ":
+                case "NEQ":
+                    var expr = new RegExp("^" + right + "$");
+                    break;
+                case "ILIKE":
+                case "NILIKE":
+                    var expr = new RegExp(right, "i");
+                    break;
+                case "LIKE":
+                case "NLIKE":
+                    var expr = new RegExp(right);
+                    break;
             }
+            var test_for_true = node_type.substring(0,1) != "N";
             if (left in table_headings) {
                 console.log("left value in table_headings.");
                 var column_index = table_headings[left];
                 return_value = $("table tbody tr").filter(function(i) {
                     text = $(this).children()[column_index].textContent;
-                    return expr.test(text);
+                    regexp_result = expr.test(text);
+                    if (test_for_true) {
+                        return regexp_result;
+                    } else {
+                        return !regexp_result;
+                    }
                 });
             }
         } else {
