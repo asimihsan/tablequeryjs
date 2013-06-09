@@ -1,3 +1,9 @@
+/**
+  * @license
+  * tablequeryjs by Asim Ihsan (http://www.asimihsan.com)
+  * https://github.com/asimihsan/tablequeryjs
+  */
+
 /*
 
 References:
