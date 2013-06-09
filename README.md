@@ -4,7 +4,32 @@ Use textual queries to filter tables. See the HTML example page online here:
 
 [http://www.asimihsan.com.s3.amazonaws.com/tablequeryjs/test/basic_example.html](http://www.asimihsan.com.s3.amazonaws.com/tablequeryjs/test/basic_example.html)
 
+## Screencast
+
+[![ScreenShot](https://raw.github.com/asimihsan/tablequeryjs/master/doc/tablequeryjs_screencast.jpg)](http://youtu.be/d0VV6Wlj0aM)
+
 ## Usage
+
+See `test/basic_example.html` for how to use. In short:
+
+-   Need:
+    -   JQuery JS
+    -   JQuery UI JS + CSS
+    -   Bootstrap CSS
+    -   Lodash JS
+    -   Modernizr JS
+-   Use a standard HTML5 table with headers and rows.
+-   Use a text box wrapper in a control-group.
+-   Include in the correct order, then finally execute:
+
+```
+$(document).ready(function() {
+    tablequery.set_table("#table");
+    tablequery.set_table_search_text("#table_search_text");
+});
+```
+
+## Testing
 
 -   Clone the repo:
 
