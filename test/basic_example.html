@@ -23,6 +23,20 @@
                 font-family: monospace;
             }
         </style>
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/1.2.1/lodash.min.js"></script>
+        <script src="../src/grammar.min.js"></script>
+        <script src="../src/tablequery.js"></script>
+
+        <script type="text/javascript">
+          $(document).ready(function() {
+            set_table("#table");
+            set_table_search_text("#table_search_text");
+          });
+        </script>
+
     </head>
     <body>
         <!--[if lt IE 7]>
@@ -669,11 +683,5 @@ not ('first name' ilike mark or number = 2)
               </div>
             </div>
         </div>
-
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/1.2.1/lodash.min.js"></script>
-        <script src="../src/grammar.min.js"></script>
-        <script src="../src/tablequery.js"></script>
     </body>
 </html>
