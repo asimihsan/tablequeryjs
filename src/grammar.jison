@@ -29,8 +29,14 @@
 "<"                       return 'LT';
 "=="                      return 'EQ';
 "="                       return 'EQ';
+"!="                      return 'NEQ';
+
 "like"                    return 'LIKE';
+"~"                       return 'LIKE';
+"!~"                      return 'NLIKE';
 "ilike"                   return 'ILIKE';
+"~*"                      return 'ILIKE';
+"!~*"                     return 'NILIKE';
 
 "and"                     return 'AND';
 "&&"                      return 'AND';
@@ -72,10 +78,16 @@ query
             {$$ = ["NOT", $2]}
     |   literal EQ literal
             {$$ = ["EQ", $1.toLowerCase(), $3];}
+    |   literal NEQ literal
+            {$$ = ["NEQ", $1.toLowerCase(), $3];}
     |   literal LIKE literal
             {$$ = ["LIKE", $1.toLowerCase(), $3];}
     |   literal ILIKE literal
             {$$ = ["ILIKE", $1.toLowerCase(), $3];}
+    |   literal NLIKE literal
+            {$$ = ["NLIKE", $1.toLowerCase(), $3];}
+    |   literal NILIKE literal
+            {$$ = ["NILIKE", $1.toLowerCase(), $3];}
     ;
 
 literal
