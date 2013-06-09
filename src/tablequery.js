@@ -1,5 +1,13 @@
 /*
 
+References:
+-   http://stackoverflow.com/a/5947280/223301
+
+*/
+
+/*
+Examples:
+
 'first name' ilike Mark
 'first name' like r
 'first name' like Mark or number = 3
@@ -11,7 +19,7 @@ not ('first name' ilike mark or number = 2)
 
 */
 
-$(document).ready(function() {
+(function(tablequery, $, undefined) {
     var table; // = $("table");
     var table_search_text; // = $("#table_search_text");
     var table_search_text_control_group; // = table_search_text.closest(".control-group");
@@ -123,7 +131,7 @@ $(document).ready(function() {
         }        
     }
 
-    maybe_update_table_headings = function () {
+    maybe_update_table_headings = function() {
         if (_.isEmpty(table_headings)) {
             $.map(table.find("th"), function(el, i) {
                 table_headings[el.textContent.toLowerCase()] = i; 
@@ -132,11 +140,11 @@ $(document).ready(function() {
         }            
     }
 
-    set_table = function(selector) {
+    tablequery.set_table = function(selector) {
         table = $(selector);
     }
 
-    set_table_search_text = function(selector) {
+    tablequery.set_table_search_text = function(selector) {
         table_search_text = $(selector);
         table_search_text_control_group = table_search_text.closest(".control-group");
         table_search_text.keyup(function(e) {
@@ -162,4 +170,4 @@ $(document).ready(function() {
         });
     }
 
-});
+}(window.tablequery = window.tablequery || {}, jQuery));
