@@ -32,8 +32,9 @@ not ('first name' ilike mark or number = 2)
     var table_search_text_control_group; // = table_search_text.closest(".control-group");
 
     var parser_exception_message;
-    var previous_search_text;
+    var previous_search_text = new Array();
     var table_headings = {};
+    var table_search_text_keyup_timer;
 
     get_rows_to_display = function(trees) {
         console.log("get_rows_to_display.");
@@ -126,8 +127,8 @@ not ('first name' ilike mark or number = 2)
         return {"rc": is_parse_successful, "parsed_query": parsed_query};        
     }
 
-    update_table_search_text_warning = function(is_parse_successful) {
-        if (table_search_text.val().length == 0) {
+    update_table_search_text_warning = function(is_parse_successful, clear) {
+        if ((table_search_text.val().length == 0) || (clear)) {
             table_search_text_control_group.removeClass("error");
             table_search_text_control_group.removeClass("success");
         } else if (is_parse_successful) {
@@ -155,34 +156,77 @@ not ('first name' ilike mark or number = 2)
     tablequery.set_table_search_text = function(selector) {
         table_search_text = $(selector);
         table_search_text_control_group = table_search_text.closest(".control-group");
-        table_search_text.keyup(function(e) {
-            if ($(this).val() == previous_search_text) {
-                return false;
-            }
-            var rv = parse_search_text($(this).val())
-            update_table_search_text_warning(rv.rc);
+
+        table_search_text_on_keyup = function(e, text_value) {
+            var rv = parse_search_text(text_value);
+            update_table_search_text_warning(rv.rc, false);
             if (rv.rc) {
                 var rows_to_display = get_rows_to_display(rv.parsed_query);
                 table_tbody_rows.hide();
                 _.each(rows_to_display, function(row) { $(row).show(); });
                 console.log(rows_to_display);
+                update_previous_search_text();
             } else {
                 table_tbody_rows.show();
             }
-            previous_search_text = $(this).val();
-            if (Modernizr.localstorage) {
-                localStorage.previous_search_text = previous_search_text;
-            }
-        });
+        }
+        table_search_text_on_keyup_debounced = _.debounce(table_search_text_on_keyup, 500);
+        table_search_text.keyup(function(e) {
+            update_table_search_text_warning(null, true);
+            table_search_text_on_keyup_debounced(e, table_search_text.val());
+        });        
 
+        // Suppress form submit.
         table_search_text.keypress(function(e) {
            return (e.keyCode || e.which || e.charCode || 0) !== 13; 
         });
 
+        // --------------------------------------------------------------------
+        //  Auto-completing and storing/restoring query history.
+        // --------------------------------------------------------------------
+        update_previous_search_text = function() {
+            if (_.contains(previous_search_text, table_search_text.val())) {
+                return;
+            }
+            previous_search_text.push(table_search_text.val());
+            if (previous_search_text.length > 5) {
+                previous_search_text = previous_search_text.slice(1);
+            }
+            if (Modernizr.localstorage) {
+                localStorage.previous_search_text = JSON.stringify(previous_search_text);
+                table_search_text.autocomplete({
+                    source: previous_search_text,
+                    minLength: 0
+                });
+            }
+        } // update_previous_search_text = function()
+
         if (Modernizr.localstorage) {
-            table_search_text.val(localStorage.previous_search_text);
-            table_search_text.keyup();
-        }
-    }
+            previous_search_text = JSON.parse(localStorage.previous_search_text);
+            _.each(previous_search_text, function(text_value) {
+                var rv = parse_search_text(text_value);
+                if (rv.rc) {
+                    var rows_to_display = get_rows_to_display(rv.parsed_query);
+                }
+            });
+            table_search_text.autocomplete({
+                source: previous_search_text,
+                minLength: 0,
+                select: function( event, ui ) {}
+            });
+            table_search_text.on("autocompleteselect", function(event, ui) {
+                table_search_text_on_keyup(null, ui.item.value);
+            });
+            table_search_text.click(function() {
+                table_search_text.autocomplete("search", "");
+                table_search_text_on_keyup(null, table_search_text.val());
+            });
+            if (previous_search_text.length > 0) {
+                table_search_text.val(previous_search_text[previous_search_text.length-1]);
+                table_search_text_on_keyup(null, table_search_text.val());
+            }
+        } // if (Modernizr.localstorage)
+        // --------------------------------------------------------------------
+    } // tablequery.set_table_search_text = function(selector)
 
 }(window.tablequery = window.tablequery || {}, jQuery));
