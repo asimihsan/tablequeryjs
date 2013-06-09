@@ -566,7 +566,7 @@ pushState:function pushState(condition) {
 stateStackSize:function stateStackSize() {
         return this.conditionStack.length;
     },
-options: {},
+options: {"flex":true,"case-insensitive":true},
 performAction: function anonymous(yy,yy_,$avoiding_name_collisions,YY_START) {
 
 var YYSTATE=YY_START;
@@ -583,40 +583,48 @@ case 4:return 7;
 break;
 case 5:return 10;
 break;
-case 6:return 'IN';
+case 6:return 10;
 break;
-case 7:return 'GTE';
+case 7:return 'IN';
 break;
-case 8:return 'LTE';
+case 8:return 'GTE';
 break;
-case 9:return 'GT';
+case 9:return 'LTE';
 break;
-case 10:return 'LT';
+case 10:return 'GT';
 break;
-case 11:return 12;
+case 11:return 'LT';
 break;
 case 12:return 12;
 break;
-case 13:return 13;
+case 13:return 12;
 break;
-case 14:return 14;
+case 14:return 13;
 break;
-case 15:return 8;
+case 15:return 14;
 break;
-case 16:return 9;
+case 16:return 8;
 break;
-case 17:return 17;
+case 17:return 8;
 break;
-case 18:/* */
+case 18:return 9;
 break;
-case 19:return 'INVALID';
+case 19:return 9;
 break;
-case 20:return 5;
+case 20:return 17;
+break;
+case 21:/* */
+break;
+case 22:return 'INVALID';
+break;
+case 23:return 5;
+break;
+case 24:console.log(yy_.yytext);
 break;
 }
 },
-rules: [/^(?:\s*\n\s*)/,/^(?:[\w]?"(\\.|[^\\"])*")/,/^(?:[\w]?'(\\.|[^\\'])*')/,/^(?:\()/,/^(?:\))/,/^(?:not\b)/,/^(?:in\b)/,/^(?:>=)/,/^(?:<=)/,/^(?:>)/,/^(?:<)/,/^(?:==)/,/^(?:=)/,/^(?:like\b)/,/^(?:ilike\b)/,/^(?:and\b)/,/^(?:or\b)/,/^(?:[A-Za-z0-9_\-\.]+)/,/^(?:\s+)/,/^(?:.)/,/^(?:$)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],"inclusive":true}}
+rules: [/^(?:\s*\n\s*)/i,/^(?:[\w]?"(\\.|[^\\"])*")/i,/^(?:[\w]?'(\\.|[^\\'])*')/i,/^(?:\()/i,/^(?:\))/i,/^(?:not)/i,/^(?:!)/i,/^(?:in)/i,/^(?:>=)/i,/^(?:<=)/i,/^(?:>)/i,/^(?:<)/i,/^(?:==)/i,/^(?:=)/i,/^(?:like)/i,/^(?:ilike)/i,/^(?:and)/i,/^(?:&&)/i,/^(?:or)/i,/^(?:\|\|)/i,/^(?:[A-Za-z0-9_\-\.]+)/i,/^(?:\s+)/i,/^(?:.)/i,/^(?:$)/i,/^(?:.)/i],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],"inclusive":true}}
 };
 return lexer;
 })();
