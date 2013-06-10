@@ -30,7 +30,7 @@
         <script src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/1.2.1/lodash.min.js"></script>
 
         <script src="../src/grammar.min.js"></script>
-        <script src="../src/tablequery.min.js"></script>
+        <script src="../src/tablequery.js"></script>
         <script type="text/javascript">
           $(document).ready(function() {
             tablequery.set_table("#table");
@@ -54,7 +54,6 @@
                     </div>
                   </div>
                 </form>
-
                 <p>Try the following queries:
                   <pre>
 'first name' ilike Mark
@@ -67,7 +66,6 @@ not 'first name' ilike mark
 not ('first name' ilike mark or number = 2)
                   </pre>
                 </p>
-
                 <table class="table" id="table">
                   <thead>
                     <tr>
