@@ -153,6 +153,7 @@ not ('first name' ilike mark or number = 2)
         update_table_headings();
     }
 
+    var previous_query_failed;
     tablequery.set_table_search_text = function(selector) {
         table_search_text = $(selector);
         table_search_text_control_group = table_search_text.closest(".control-group");
@@ -161,20 +162,25 @@ not ('first name' ilike mark or number = 2)
             var rv = parse_search_text(text_value);
             update_table_search_text_warning(rv.rc, false);
             if (rv.rc) {
+                previous_query_failed = false;
                 var rows_to_display = get_rows_to_display(rv.parsed_query);
                 table_tbody_rows.hide();
                 _.each(rows_to_display, function(row) { $(row).show(); });
                 console.log(rows_to_display);
                 update_previous_search_text();
             } else {
-                table_tbody_rows.show();
+                if (!previous_query_failed) {
+                    table_tbody_rows.show();
+                }                
+                previous_query_failed = true;
             }
         }
-        table_search_text_on_keyup_debounced = _.debounce(table_search_text_on_keyup, 500);
+        table_search_text_on_keyup_debounced = _.debounce(table_search_text_on_keyup, 500);        
         table_search_text.keyup(function(e) {
-            update_table_search_text_warning(null, true);
+            //update_table_search_text_warning_debounced(null, true);
             table_search_text_on_keyup_debounced(e, table_search_text.val());
         });        
+        
 
         // Suppress form submit.
         table_search_text.keypress(function(e) {
