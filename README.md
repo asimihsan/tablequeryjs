@@ -1,6 +1,15 @@
 # tablequeryjs
 
-Use textual queries to filter tables. See the HTML example page online here:
+Use textual queries to filter tables.
+
+-   Execute arbitrarily complex queries, using parenthesis and logical operators.
+-   Confirm the validity of queries in real time; indicated as a coloured outline around the search field.
+-   Execute queries on any column name.
+-   Re-use old queries; the last five queries are persisted and available via a dropdown.
+
+## Example
+
+See the HTML example page online here:
 
 [http://www.asimihsan.com.s3.amazonaws.com/tablequeryjs/test/basic_example.html](http://www.asimihsan.com.s3.amazonaws.com/tablequeryjs/test/basic_example.html)
 
@@ -28,6 +37,23 @@ $(document).ready(function() {
     tablequery.set_table_search_text("#table_search_text");
 });
 ```
+
+## Syntax
+
+Chain together queries with logical operators, i.e.
+
+```
+COLUMN_NAME COMPARISON_OPERATOR VALUE
+
+COLUMN_NAME COMPARISON_OPERATOR VALUE LOGICAL_OPERATOR COLUMN_NAME COMPARISON_OPERATOR VALUE
+```
+
+-   Both `COLUMN_NAME` and `VALUE` are literals; you may either surround them in single or double quotes or type as-is.
+  -     For columns with spaces in their names you must specify them with quotes, just as with SQL.
+-   Column names are case insensitive.
+-   The following are valid comparison operators:
+    -   `LIKE`, `~`: case sensitive regular expression match.
+    -   `ILIKE`, `~*`: case insensitive regular expression match.
 
 ## Testing
 
