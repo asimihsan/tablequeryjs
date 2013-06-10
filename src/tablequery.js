@@ -202,7 +202,11 @@ not ('first name' ilike mark or number = 2)
         } // update_previous_search_text = function()
 
         if (Modernizr.localstorage) {
-            previous_search_text = JSON.parse(localStorage.previous_search_text);
+            try {
+                previous_search_text = JSON.parse(localStorage.previous_search_text);
+            } catch (e) {
+                previous_search_text = [];
+            }
             _.each(previous_search_text, function(text_value) {
                 var rv = parse_search_text(text_value);
                 if (rv.rc) {
