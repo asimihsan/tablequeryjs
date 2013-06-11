@@ -35,6 +35,14 @@ not ('first name' ilike mark or number = 2)
     var previous_search_text = new Array();
     var table_headings = {};
     var table_search_text_keyup_timer;
+    var current_rows_to_display;
+    var indices;
+
+    tablequery.log = function(data)
+    {
+        var currentDate = '[' + Date.now() + '] ';
+        console.log(currentDate, data);
+    };
 
     get_rows_to_display = function(trees) {
         console.log("get_rows_to_display.");
@@ -151,6 +159,11 @@ not ('first name' ilike mark or number = 2)
         table = $(selector);
         table_tbody_rows = table.find("tbody tr");
         update_table_headings();
+        current_rows_to_display = table_tbody_rows;
+        indices = new HashMap();
+        _.each(current_rows_to_display, function(row) {
+            indices.set($(row).index(), true);
+        })
     }
 
     var previous_query_failed;
@@ -163,10 +176,18 @@ not ('first name' ilike mark or number = 2)
             update_table_search_text_warning(rv.rc, false);
             if (rv.rc) {
                 previous_query_failed = false;
-                var rows_to_display = get_rows_to_display(rv.parsed_query);
-                table_tbody_rows.hide();
-                _.each(rows_to_display, function(row) { $(row).show(); });
-                console.log(rows_to_display);
+
+                tablequery.log("on_keyup call to get_rows_to_display start.");
+                current_rows_to_display = get_rows_to_display(rv.parsed_query);
+                tablequery.log("on_keyup call to get_rows_to_display end.");
+                indices = new HashMap();
+                _.each(current_rows_to_display, function(row) {
+                    indices.set($(row).index(), true);
+                })
+
+                tablequery.log("on_keyup call to refresh_table_visibility start.");
+                refresh_table_visibility();
+                tablequery.log("on_keyup call to refresh_table_visibility end.");
                 update_previous_search_text();
             } else {
                 if (!previous_query_failed) {
@@ -179,8 +200,32 @@ not ('first name' ilike mark or number = 2)
         table_search_text.keyup(function(e) {
             //update_table_search_text_warning_debounced(null, true);
             table_search_text_on_keyup_debounced(e, table_search_text.val());
-        });        
-        
+        });     
+
+        refresh_table_visibility = function() {
+            tablequery.log("refresh_table_visibility entry.");
+            var found_visible = false;
+            _.every(table_tbody_rows, function(row) {
+                if (tablequery.elementInViewport(row)) {
+                    if (indices.has($(row).index()) == true) {
+                        $(row).show();
+                    } else {
+                        $(row).hide();
+                    }
+                    found_visible = true;
+                    return true;
+                } else {
+                    return (!found_visible);
+                }
+            });
+            tablequery.log("refresh_table_visibility exit.");
+            //table_tbody_rows.hide();
+            //_.each(current_rows_to_display, function(row) { $(row).show(); });
+        }
+        refresh_table_visibility_debounced = _.debounce(refresh_table_visibility, 50);
+        $(window).scroll(function() {
+            refresh_table_visibility_debounced();
+        });
 
         // Suppress form submit.
         table_search_text.keypress(function(e) {
@@ -216,7 +261,7 @@ not ('first name' ilike mark or number = 2)
             _.each(previous_search_text, function(text_value) {
                 var rv = parse_search_text(text_value);
                 if (rv.rc) {
-                    var rows_to_display = get_rows_to_display(rv.parsed_query);
+                    get_rows_to_display(rv.parsed_query);
                 }
             });
             table_search_text.autocomplete({
@@ -237,5 +282,25 @@ not ('first name' ilike mark or number = 2)
         } // if (Modernizr.localstorage)
         // --------------------------------------------------------------------
     } // tablequery.set_table_search_text = function(selector)
+
+    tablequery.elementInViewport = function(el) {
+      var top = el.offsetTop;
+      var left = el.offsetLeft;
+      var width = el.offsetWidth;
+      var height = el.offsetHeight;
+
+      while(el.offsetParent) {
+        el = el.offsetParent;
+        top += el.offsetTop;
+        left += el.offsetLeft;
+      }
+
+      return (
+        top >= window.pageYOffset  &&
+        left >= window.pageXOffset &&
+        (top + height) <= (window.pageYOffset + window.innerHeight) &&
+        (left + width) <= (window.pageXOffset + window.innerWidth)
+      );
+    }
 
 }(window.tablequery = window.tablequery || {}, jQuery));
