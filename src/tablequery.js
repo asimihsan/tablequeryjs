@@ -27,6 +27,7 @@ not ('first name' ilike mark or number = 2)
 
 (function(tablequery, $, undefined) {
     var table; // = $("table");
+    var table_parent;
     var table_tbody_rows;
     var table_search_text; // = $("#table_search_text");
     var table_search_text_control_group; // = table_search_text.closest(".control-group");
@@ -109,6 +110,7 @@ not ('first name' ilike mark or number = 2)
             console.log("no return value, return all rows.");
             return_value = table_tbody_rows;
         }
+        return_value = $(return_value);
         console.log("returning")
         console.log(return_value);
         return return_value;
@@ -149,6 +151,7 @@ not ('first name' ilike mark or number = 2)
 
     tablequery.set_table = function(selector) {
         table = $(selector);
+        table_parent = table.parent();
         table_tbody_rows = table.find("tbody tr");
         update_table_headings();
     }
@@ -164,24 +167,10 @@ not ('first name' ilike mark or number = 2)
             if (rv.rc) {
                 previous_query_failed = false;
                 var rows_to_display = get_rows_to_display(rv.parsed_query);
-
-                /*
-                this is an order of magnitude slower. why?
-                display_head = $(rows_to_display[0]);
-                _.each(table_tbody_rows, function(row) {
-                    table_row = $(row);
-                    if (table_row.index() === display_head.index()) {
-                        table_row.removeClass('hidden');
-                        rows_to_display.splice(0,1);
-                        display_head = $(rows_to_display[0]);
-                    } else {
-                        table_row.addClass('hidden');
-                    }
-                })
-                */
+                table.detach();
                 table_tbody_rows.addClass('hidden');
-                _.each(rows_to_display, function(row) { $(row).removeClass('hidden'); });
-                console.log(rows_to_display);
+                rows_to_display.removeClass('hidden');
+                table_parent.append(table);
                 update_previous_search_text();
             } else {
                 if (!previous_query_failed) {
