@@ -61,7 +61,7 @@ not ('first name' ilike mark or number = 2)
                 case "NLIKE":
                     var expr = new RegExp(right);
                     break;
-            }
+            } // switch(node_type)
             var test_for_true = node_type.substring(0,1) != "N";
             if (left in table_headings) {
                 console.log("left value in table_headings.");
@@ -75,37 +75,31 @@ not ('first name' ilike mark or number = 2)
                         return !regexp_result;
                     }
                 });
-            }
+            } // if (left in table_headings)
         } else {
             console.log("Interior nodes.");
             var left_trees = get_rows_to_display(left);
             if (trees.length == 3) {
                 var right_trees = get_rows_to_display(right);    
             }
-            if (node_type == "AND") {
-                console.log("AND");
-                return_value = _.intersection(left_trees, right_trees);
-            } else if (node_type == "OR") {
-                console.log("OR");
-                return_value = _.union(left_trees, right_trees);
-            } else if (node_type == "NOT") {
-                console.log("NOT");
-
-                // Infuriatingly, this doesn't work, because no matter what
-                // I do I can't get elements to match under ===. Why?
-                // return_value = _.difference($("table tbody tr"), left_trees);
-
-                return_value = _.filter(table_tbody_rows, function(el) {
-                    var el_in_left_trees = false;
-                    _.each(left_trees, function(el2) {
-                        if ($(el).index() == $(el2).index()) {
-                            el_in_left_trees = true;
-                        }
+            switch(node_type) {
+                case "AND":
+                    console.log("AND");
+                    return_value = _.intersection(left_trees, right_trees);
+                    break;
+                case "OR":
+                    console.log("OR");
+                    return_value = _.union(left_trees, right_trees);
+                    break;
+                case "NOT":
+                    console.log("NOT");
+                    var left_tree_indices = {}
+                    _.each(left_trees, function(obj) { left_tree_indices[$(obj).index()] = true; });
+                    return_value = _.filter(table_tbody_rows, function(row) {
+                        return !($(row).index() in left_tree_indices);
                     });
-                    return !el_in_left_trees;
-                });
-            }
-        }
+            } // switch(node_type)
+        } // if (!($.isArray(left)))
         if (!return_value) {
             console.log("no return value, return all rows.");
             return_value = table_tbody_rows;
