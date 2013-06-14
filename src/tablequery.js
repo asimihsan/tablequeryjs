@@ -68,6 +68,7 @@ not ('first name' ilike mark or number = 2)
                 var column_index = table_headings[left];
                 return_value = table_tbody_rows.filter(function(i) {
                     text = $(this).children()[column_index].textContent;
+                    text = $.trim(text);
                     regexp_result = expr.test(text);
                     if (test_for_true) {
                         return regexp_result;
