@@ -229,10 +229,6 @@ not ('first name' ilike mark or number = 2)
             table_search_text.click(function() {
                 table_search_text.autocomplete("search", "");
             });
-            if (previous_search_text.length > 0) {
-                table_search_text.val(previous_search_text[previous_search_text.length-1]);
-                table_search_text_on_keyup(null, table_search_text.val());
-            }
         } // if (Modernizr.localstorage)
         // --------------------------------------------------------------------
     } // tablequery.set_table_search_text = function(selector)
