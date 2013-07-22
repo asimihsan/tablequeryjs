@@ -81,7 +81,7 @@ not ('first name' ilike mark or number = 2)
             console.log("Interior nodes.");
             var left_trees = get_rows_to_display(left);
             if (trees.length == 3) {
-                var right_trees = get_rows_to_display(right);    
+                var right_trees = get_rows_to_display(right);
             }
             switch(node_type) {
                 case "AND":
@@ -121,7 +121,7 @@ not ('first name' ilike mark or number = 2)
             parser_exception_message = e.message;
             is_parse_successful = false;
         }
-        return {"rc": is_parse_successful, "parsed_query": parsed_query};        
+        return {"rc": is_parse_successful, "parsed_query": parsed_query};
     }
 
     update_table_search_text_warning = function(is_parse_successful, clear) {
@@ -134,12 +134,12 @@ not ('first name' ilike mark or number = 2)
         } else {
             table_search_text_control_group.addClass("error");
             table_search_text_control_group.removeClass("success");
-        }        
+        }
     }
 
-    update_table_headings = function() {    
+    update_table_headings = function() {
         $.map(table.find("th"), function(el, i) {
-            table_headings[el.textContent.toLowerCase()] = i; 
+            table_headings[el.textContent.toLowerCase()] = i;
         });
         console.log(table_headings);
     }
@@ -170,20 +170,23 @@ not ('first name' ilike mark or number = 2)
             } else {
                 if (!previous_query_failed) {
                     table_tbody_rows.removeClass('hidden');
-                }                
+                }
                 previous_query_failed = true;
             }
         }
-        table_search_text_on_keyup_debounced = _.debounce(table_search_text_on_keyup, 500);        
+        table_search_text_on_keyup_debounced = _.debounce(table_search_text_on_keyup, 500);
         table_search_text.keyup(function(e) {
-            //update_table_search_text_warning_debounced(null, true);
-            table_search_text_on_keyup_debounced(e, table_search_text.val());
-        });        
-        
+            if ((e.keyCode || e.which || e.charCode || 0) === 13) {
+                table_search_text_on_keyup(e, table_search_text.val());
+            } else {
+                table_search_text_on_keyup_debounced(e, table_search_text.val());
+            }
+        });
+
 
         // Suppress form submit.
         table_search_text.keypress(function(e) {
-           return (e.keyCode || e.which || e.charCode || 0) !== 13; 
+            return (e.keyCode || e.which || e.charCode || 0) !== 13;
         });
 
         // --------------------------------------------------------------------
