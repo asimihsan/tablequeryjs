@@ -139,7 +139,7 @@ not ('first name' ilike mark or number = 2)
 
     update_table_headings = function() {
         $.map(table.find("th"), function(el, i) {
-            table_headings[el.textContent.toLowerCase()] = i;
+            table_headings[$.trim(el.textContent.toLowerCase())] = i;
         });
         console.log(table_headings);
     }
