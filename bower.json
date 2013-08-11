@@ -1,0 +1,18 @@
+{
+  "name": "tablequeryjs",
+  "version": "0.0.1",
+  "main": [
+    "src/tablequery.js",
+    "src/grammar.js"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "qunit": "git://github.com/jquery/qunit.git#~1.12.0"
+  }
+}
