@@ -1,5 +1,7 @@
 # tablequeryjs
 
+[![Build Status](https://travis-ci.org/asimihsan/tablequeryjs.png?branch=master)](https://travis-ci.org/asimihsan/tablequeryjs)
+
 Use textual queries to filter tables.
 
 -   Execute arbitrarily complex queries, using parenthesis and logical operators.
