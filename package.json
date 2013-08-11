@@ -13,8 +13,10 @@
     "tests"
   ],
   "devDependencies": {
-    "qunit": "git://github.com/jquery/qunit.git#~1.12.0",
     "grunt": "~0.4.1",
     "grunt-contrib-qunit": "~0.2.2"
+  },
+  "dependencies": {
+    "bower": "~1.1.2"
   }
 }
