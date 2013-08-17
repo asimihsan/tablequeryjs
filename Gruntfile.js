@@ -6,7 +6,8 @@ module.exports = function(grunt) {
                 command: [
                     'jison src/grammar.jison --outfile build/grammar.js',
                     'sed -i "" s/window.Modernizr/tablequery.Modernizr/g build/modernizr.custom.js',
-                    'sed -i "" s/Modernizr.load/tablequery.Modernizr.load/g build/modernizr.custom.js'
+                    'sed -i "" s/Modernizr.load/tablequery.Modernizr.load/g build/modernizr.custom.js',
+                    //'./node_modules/.bin/jquery-builder --exclude ajax,deprecated,wrap > build/jquery.custom.js'
                 ].join('&&'),
                 options: {
                     stdout: true
@@ -62,6 +63,7 @@ module.exports = function(grunt) {
                 src: [
                     'build/lodash.custom.js',
                     'build/modernizr.custom.js',
+                    //'build/jquery.custom.js',
                     'build/grammar.js',
                     'src/tablequery-core.js'
                 ],

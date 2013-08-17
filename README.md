@@ -23,13 +23,15 @@ See the HTML example page online here:
 
 See `test/basic_example.html` for how to use. In short:
 
--   Need:
-    -   JQuery JS
-    -   JQuery UI JS + CSS
-    -   Bootstrap CSS
--   Use a standard HTML5 table with headers and rows.
--   Use a text box wrapper in a control-group.
--   Include in the correct order, then finally execute:
+-   Requirements:
+    -   jQuery
+    -   jQuery UI
+-   Include the JS file:
+
+```html
+<script src="../build/tablequery.min.js"></script>
+```
+- Execute:
 
 ```
 $(document).ready(function() {
@@ -37,6 +39,15 @@ $(document).ready(function() {
     tablequery.set_table_search_text("#table_search_text");
 });
 ```
+
+- See `test/example_basic.html` for an example.
+
+### Coloured text box
+
+-   Optionally: if you want the text box to highlight red or green depending
+on the correctness of the input then you can include Bootstrap and use a text
+box wrapper in a control-group. See `test/example_bootstrap.html` for an
+example.
 
 ## Syntax
 
