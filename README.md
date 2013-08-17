@@ -39,6 +39,7 @@ See `test/basic_example.html` for how to use. In short:
     tablequery.set_table_search_text("#table_search_text");
   });
 </script>
+```
 
 See `test/example_basic.html` for an example.
 
