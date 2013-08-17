@@ -200,8 +200,8 @@ not ('first name' ilike mark or number = 2)
             if (previous_search_text.length > 5) {
                 previous_search_text = previous_search_text.slice(1);
             }
-            if (Modernizr.localstorage) {
-                localStorage.previous_search_text = JSON.stringify(previous_search_text);
+            if (window.localStorage !== undefined) {
+                window.localStorage.previous_search_text = JSON.stringify(previous_search_text);
                 table_search_text.autocomplete({
                     source: previous_search_text,
                     minLength: 0
@@ -209,9 +209,9 @@ not ('first name' ilike mark or number = 2)
             }
         } // update_previous_search_text = function()
 
-        if (Modernizr.localstorage) {
+        if (window.localStorage !== undefined) {
             try {
-                previous_search_text = JSON.parse(localStorage.previous_search_text);
+                previous_search_text = JSON.parse(window.localStorage.previous_search_text);
             } catch (e) {
                 previous_search_text = [];
             }
@@ -232,7 +232,7 @@ not ('first name' ilike mark or number = 2)
             table_search_text.click(function() {
                 table_search_text.autocomplete("search", "");
             });
-        } // if (Modernizr.localstorage)
+        } // if (window.localStorage !== undefined)
         // --------------------------------------------------------------------
     } // tablequery.set_table_search_text = function(selector)
 
