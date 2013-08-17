@@ -124,6 +124,9 @@ tablequery._parse_search_text = function(search_text) {
 }
 
 tablequery._update_table_search_text_warning = function(is_parse_successful, clear) {
+    if (table_search_text_control_group.length == 0) {
+        return;
+    }
     if ((table_search_text.val().length == 0) || (clear)) {
         table_search_text_control_group.removeClass("error");
         table_search_text_control_group.removeClass("success");

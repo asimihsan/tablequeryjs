@@ -24,7 +24,9 @@
     "grunt-lodash": "~0.2.0",
     "grunt-bower-task": "~0.3.1",
     "grunt-shell": "~0.3.1",
-    "jison": "~0.4.10"
+    "jison": "~0.4.10",
+    "grunt-jquerybuilder": "~0.1.4",
+    "jquery-builder": "~0.5.0"
   },
   "dependencies": {
     "bower": "~1.1.2"
