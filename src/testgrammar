@@ -1,1 +1,0 @@
-index != 5 && !('first name' !~* dude)
