@@ -2,16 +2,20 @@ module.exports = function(grunt) {
     // Project config
     grunt.initConfig({
         shell: {
-            multiple: {
-                command: [
-                    'jison src/grammar.jison --outfile build/grammar.js',
-                    'sed -i "" s/window.Modernizr/tablequery.Modernizr/g build/modernizr.custom.js',
-                    'sed -i "" s/Modernizr.load/tablequery.Modernizr.load/g build/modernizr.custom.js',
-                    //'./node_modules/.bin/jquery-builder --exclude ajax,deprecated,wrap > build/jquery.custom.js'
-                ].join('&&'),
+            jison: {
+                command: 'jison src/grammar.jison --outfile build/grammar.js',
                 options: {
                     stdout: true
                 }
+            },
+            modernizr: {
+                command: [
+                    'sed -i "" s/window.Modernizr/tablequery.Modernizr/g build/modernizr.custom.js',
+                    'sed -i "" s/Modernizr.load/tablequery.Modernizr.load/g build/modernizr.custom.js'
+                ].join('&&')
+            },
+            jquery: {
+                command: './node_modules/.bin/jquery-builder --exclude ajax,deprecated,wrap > build/jquery.custom.js'
             }
         },
         lodash: {
@@ -54,6 +58,7 @@ module.exports = function(grunt) {
             options: {
                 banner: '/*! tablequeryjs by Asim Ihsan (http://www.asimihsan.com)\n https://github.com/asimihsan/tablequeryjs\n <%= grunt.template.today("yyyy-mm-dd") %> */\n',
                 wrap: "tablequery",
+                report: 'gzip',
                 //mangle: false,
                 //beautify: true
             },
@@ -69,12 +74,12 @@ module.exports = function(grunt) {
             }
         },
         qunit: {
-            files: ['test/grammar/tests.html']
+            files: ['test/*/tests.html']
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-qunit');
-    grunt.registerTask('test', 'qunit');
+    grunt.registerTask('test', ['build', 'qunit']);
 
     grunt.loadNpmTasks('grunt-lodash');
     grunt.loadNpmTasks('grunt-bower-task');
