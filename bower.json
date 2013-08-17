@@ -2,8 +2,8 @@
   "name": "tablequeryjs",
   "version": "0.0.1",
   "main": [
-    "src/tablequery.js",
-    "src/grammar.js"
+    "src/grammar.js",
+    "src/tablequery-core.js"
   ],
   "ignore": [
     "**/.*",
@@ -13,6 +13,7 @@
     "tests"
   ],
   "devDependencies": {
-    "qunit": "git://github.com/jquery/qunit.git#~1.12.0"
+    "qunit": "git://github.com/jquery/qunit.git#~1.12.0",
+    "modernizr": "git://github.com/Modernizr/Modernizr.git#2.6.2"
   }
 }
