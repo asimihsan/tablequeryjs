@@ -103,7 +103,6 @@ tablequery._get_rows_to_display = function(trees) {
         //console.log("no return value, return all rows.");
         return_value = table_tbody_rows;
     }
-    return_value = $(return_value);
     //console.log("returning")
     //console.log(return_value);
     return return_value;
@@ -158,7 +157,7 @@ tablequery.set_table_search_text = function(selector) {
             var rows_to_display = tablequery._get_rows_to_display(rv.parsed_query);
             table.detach();
             table_tbody_rows.addClass('hidden');
-            rows_to_display.removeClass('hidden');
+            tablequery._.each(rows_to_display, function(row) { $(row).removeClass('hidden'); });
             table_parent.append(table);
             tablequery._update_previous_search_text();
         } else {
@@ -176,7 +175,6 @@ tablequery.set_table_search_text = function(selector) {
             tablequery._table_search_text_on_keyup_debounced(e, table_search_text.val());
         }
     });
-
 
     // Suppress form submit.
     table_search_text.keypress(function(e) {
@@ -225,6 +223,10 @@ tablequery.set_table_search_text = function(selector) {
         });
         table_search_text.click(function() {
             table_search_text.autocomplete("search", "");
+            tablequery._table_search_text_on_keyup(undefined, table_search_text.val());
+        });
+        table_search_text.blur(function() {
+            tablequery._table_search_text_on_keyup(undefined, table_search_text.val());
         });
     } // if (tablequery.Modernizr.localstorage)
     // --------------------------------------------------------------------

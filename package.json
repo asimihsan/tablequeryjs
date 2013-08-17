@@ -25,8 +25,9 @@
     "grunt-bower-task": "~0.3.1",
     "grunt-shell": "~0.3.1",
     "jison": "~0.4.10",
-    "grunt-jquerybuilder": "~0.1.4",
-    "jquery-builder": "~0.5.0"
+    "jquery-builder": "~0.5.0",
+    "phantomjs": "~1.9.1-5",
+    "grunt-casperjs": "~1.0.6"
   },
   "dependencies": {
     "bower": "~1.1.2"

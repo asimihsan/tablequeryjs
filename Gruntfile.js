@@ -10,12 +10,22 @@ module.exports = function(grunt) {
             },
             modernizr: {
                 command: [
-                    'sed -i "" s/window.Modernizr/tablequery.Modernizr/g build/modernizr.custom.js',
-                    'sed -i "" s/Modernizr.load/tablequery.Modernizr.load/g build/modernizr.custom.js'
-                ].join('&&')
+                    "sed 's/window.Modernizr/tablequery.Modernizr/g' build/modernizr.custom.js > build/modernizr.custom.js.tmp",
+                    "sed 's/Modernizr.load/tablequery.Modernizr.load/g' build/modernizr.custom.js.tmp > build/modernizr.custom.js",
+                    "rm -f build/*.tmp"
+                ].join('&& ')
             },
             jquery: {
                 command: './node_modules/.bin/jquery-builder --exclude ajax,deprecated,wrap > build/jquery.custom.js'
+            },
+            casperjs: {
+                command: [
+                    "casperjs test --direct --log-level=debug test/tablequery-core/test_simple_eq.js",
+                    "casperjs test --direct --log-level=debug test/tablequery-core/test_simple_or.js"
+                ].join('&& '),
+                options: {
+                    stdout: true
+                }
             }
         },
         lodash: {
@@ -32,7 +42,8 @@ module.exports = function(grunt) {
                     'each',
                     'memoize',
                     'debounce',
-                    'contains'
+                    'contains',
+                    'isUndefined'
                 ],
                 flags: [
                     '--debug'
@@ -74,17 +85,32 @@ module.exports = function(grunt) {
             }
         },
         qunit: {
-            files: ['test/*/tests.html']
+            files: ['test/grammar/tests.html']
+        },
+        casperjs: {
+            files: ['test/tablequery-core/*.js'],
+            options: {
+                direct: true,
+                logLevel: "debug"
+            }
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-qunit');
-    grunt.registerTask('test', ['build', 'qunit']);
+    grunt.loadNpmTasks('grunt-shell');
+    grunt.loadNpmTasks('grunt-casperjs');
+    grunt.registerTask('test', ['build',
+                                'qunit',
+                                'casperjs']);
 
     grunt.loadNpmTasks('grunt-lodash');
     grunt.loadNpmTasks('grunt-bower-task');
     grunt.loadNpmTasks('grunt-modernizr');
-    grunt.loadNpmTasks('grunt-shell');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.registerTask('build', ['bower', 'lodash', 'modernizr', 'shell', 'uglify']);
+    grunt.registerTask('build', ['bower',
+                                 'lodash',
+                                 'modernizr',
+                                 'shell:jison',
+                                 'shell:modernizr',
+                                 'uglify']);
 }
