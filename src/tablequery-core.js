@@ -29,7 +29,6 @@ var table; // = $("table");
 var table_parent;
 var table_tbody_rows;
 var table_search_text; // = $("#table_search_text");
-var table_search_text_control_group; // = table_search_text.closest(".control-group");
 
 var parser_exception_message;
 var previous_search_text = new Array();
@@ -124,18 +123,12 @@ tablequery._parse_search_text = function(search_text) {
 }
 
 tablequery._update_table_search_text_warning = function(is_parse_successful, clear) {
-    if (table_search_text_control_group.length == 0) {
-        return;
-    }
-    if ((table_search_text.val().length == 0) || (clear)) {
-        table_search_text_control_group.removeClass("error");
-        table_search_text_control_group.removeClass("success");
+    if ((table_search_text.val().length == 0) || clear) {
+        table_search_text.css("border", "");
     } else if (is_parse_successful) {
-        table_search_text_control_group.removeClass("error");
-        table_search_text_control_group.addClass("success");
+        table_search_text.css("border", "2px solid green");
     } else {
-        table_search_text_control_group.addClass("error");
-        table_search_text_control_group.removeClass("success");
+        table_search_text.css("border", "2px solid red");
     }
 }
 
@@ -156,7 +149,6 @@ tablequery.set_table = function(selector) {
 var previous_query_failed;
 tablequery.set_table_search_text = function(selector) {
     table_search_text = $(selector);
-    table_search_text_control_group = table_search_text.closest(".control-group");
 
     tablequery._table_search_text_on_keyup = function(e, text_value) {
         var rv = tablequery._parse_search_text(text_value);

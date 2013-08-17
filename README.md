@@ -26,28 +26,21 @@ See `test/basic_example.html` for how to use. In short:
 -   Requirements:
     -   jQuery
     -   jQuery UI
--   Include the JS file:
 
 ```html
-<script src="../build/tablequery.min.js"></script>
-```
-- Execute:
+<link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet">
 
-```
-$(document).ready(function() {
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+<script src="tablequery.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
     tablequery.set_table("#table");
     tablequery.set_table_search_text("#table_search_text");
-});
-```
+  });
+</script>
 
 - See `test/example_basic.html` for an example.
-
-### Coloured text box
-
--   Optionally: if you want the text box to highlight red or green depending
-on the correctness of the input then you can include Bootstrap and use a text
-box wrapper in a control-group. See `test/example_bootstrap.html` for an
-example.
 
 ## Syntax
 
