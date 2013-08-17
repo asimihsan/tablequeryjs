@@ -58,9 +58,18 @@ COLUMN_NAME COMPARISON_OPERATOR VALUE LOGICAL_OPERATOR COLUMN_NAME COMPARISON_OP
 -   Both `COLUMN_NAME` and `VALUE` are literals; you may either surround them in single or double quotes or type as-is.
   -     For columns with spaces in their names you must specify them with quotes, just as with SQL.
 -   Column names are case insensitive.
--   The following are valid comparison operators:
+-   The following are valid comparison operators; operators on the same bullet
+are equivalent:
+    -   `EQ`, `=`, `==`: strict equality (e.g. "Mar" doesn't equal "Mark").
     -   `LIKE`, `~`: case sensitive regular expression match.
     -   `ILIKE`, `~*`: case insensitive regular expression match.
+- Each of the above operators can be negated:
+    -   `NEQ`, `!=`: strict inequality
+    -   `NLIKE`, `!~`: case sensitive regular expression non-match.
+    -   `NILIKE`, `!~*`: case insensitive regular expression non-match.
+-   You can group expressions using logical operators and parentheses, e.g.
+    -   `number = 5 OR number = 6`
+    -   `(number = 5 OR number = 6) and ((( name = 'Mark' )))`
 
 ## Building and testing
 
