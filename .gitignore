@@ -3,3 +3,5 @@ bower_components
 node_modules
 build
 lib
+test/*/*.png
+npm-debug.log

@@ -13,7 +13,7 @@ Use textual queries to filter tables.
 
 See the HTML example page online here:
 
-[http://www.asimihsan.com.s3.amazonaws.com/tablequeryjs/test/basic_example.html](http://www.asimihsan.com.s3.amazonaws.com/tablequeryjs/test/basic_example.html)
+[http://www.asimihsan.com.s3.amazonaws.com/tablequeryjs/test/example_basic.html](http://www.asimihsan.com.s3.amazonaws.com/tablequeryjs/test/example_basic.html)
 
 ## Screencast
 
@@ -40,7 +40,9 @@ See `test/basic_example.html` for how to use. In short:
   });
 </script>
 
-- See `test/example_basic.html` for an example.
+See `test/example_basic.html` for an example.
+
+In order to build the library see "Building and testing" below.
 
 ## Syntax
 
@@ -59,7 +61,7 @@ COLUMN_NAME COMPARISON_OPERATOR VALUE LOGICAL_OPERATOR COLUMN_NAME COMPARISON_OP
     -   `LIKE`, `~`: case sensitive regular expression match.
     -   `ILIKE`, `~*`: case insensitive regular expression match.
 
-## Testing
+## Building and testing
 
 -   Clone the repo:
 
