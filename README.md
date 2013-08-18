@@ -32,7 +32,7 @@ See `test/basic_example.html` for how to use. In short:
 
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-<script src="tablequery.min.js"></script>
+<script src="http://cdn.jsdelivr.net/jquery.tablequeryjs/0.1.1/tablequery.min.js"></script>
 <script type="text/javascript">
   $(document).ready(function() {
     tablequery.set_table("#table");
