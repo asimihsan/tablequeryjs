@@ -145,6 +145,14 @@ tablequery.set_table = function(selector) {
     tablequery._update_table_headings();
 }
 
+tablequery.hide_selector = function(selector) {
+    selector.css("display", "none");
+}
+
+tablequery.show_selector = function(selector) {
+    selector.css("display", "");
+}
+
 var previous_query_failed;
 tablequery.set_table_search_text = function(selector) {
     table_search_text = $(selector);
@@ -156,13 +164,13 @@ tablequery.set_table_search_text = function(selector) {
             previous_query_failed = false;
             var rows_to_display = tablequery._get_rows_to_display(rv.parsed_query);
             table.detach();
-            table_tbody_rows.addClass('hidden');
-            tablequery._.each(rows_to_display, function(row) { $(row).removeClass('hidden'); });
+            tablequery.hide_selector(table_tbody_rows);
+            tablequery._.each(rows_to_display, function(row) { tablequery.show_selector($(row)); });
             table_parent.append(table);
             tablequery._update_previous_search_text();
         } else {
             if (!previous_query_failed) {
-                table_tbody_rows.removeClass('hidden');
+                tablequery.show_selector(table_tbody_rows);
             }
             previous_query_failed = true;
         }
