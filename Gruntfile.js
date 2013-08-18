@@ -42,8 +42,7 @@ module.exports = function(grunt) {
                     'each',
                     'memoize',
                     'debounce',
-                    'contains',
-                    'isUndefined'
+                    'contains'
                 ],
                 flags: [
                     '--debug'
@@ -57,6 +56,13 @@ module.exports = function(grunt) {
         modernizr: {
             devFile: "lib/modernizr/modernizr.js",
             outputFile: "build/modernizr.custom.js",
+            extra : {
+                "shiv" : false,
+                "printshiv" : false,
+                "load" : false,
+                "mq" : false,
+                "cssclasses" : false
+            },
             uglify: false,
             tests: [
                 "localstorage"
