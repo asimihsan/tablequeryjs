@@ -44,7 +44,6 @@ var table_tbody_rows;
 var table_search_text; // = $("#table_search_text");
 
 var parser_exception_message;
-var previous_search_text = new Array();
 var table_headings = {};
 var table_search_text_keyup_timer;
 
@@ -180,7 +179,6 @@ tablequery.set_table_search_text = function(selector) {
             tablequery.hide_selector(table_tbody_rows);
             tablequery._.each(rows_to_display, function(row) { tablequery.show_selector($(row)); });
             table_parent.append(table);
-            tablequery._update_previous_search_text();
         } else {
             if (!previous_query_failed) {
                 tablequery.show_selector(table_tbody_rows);
@@ -202,53 +200,11 @@ tablequery.set_table_search_text = function(selector) {
         return (e.keyCode || e.which || e.charCode || 0) !== 13;
     });
 
-    // --------------------------------------------------------------------
-    //  Auto-completing and storing/restoring query history.
-    // --------------------------------------------------------------------
-    tablequery._update_previous_search_text = function() {
-        if (tablequery._.contains(previous_search_text, table_search_text.val())) {
-            return;
-        }
-        previous_search_text.push(table_search_text.val());
-        if (previous_search_text.length > 5) {
-            previous_search_text = previous_search_text.slice(1);
-        }
-        if (tablequery.Modernizr.localstorage) {
-            localStorage.previous_search_text = JSON.stringify(previous_search_text);
-            table_search_text.autocomplete({
-                source: previous_search_text,
-                minLength: 0
-            });
-        }
-    } // tablequery._update_previous_search_text
-
-    if (tablequery.Modernizr.localstorage) {
-        try {
-            previous_search_text = JSON.parse(localStorage.previous_search_text);
-        } catch (e) {
-            previous_search_text = [];
-        }
-        tablequery._.each(previous_search_text, function(text_value) {
-            var rv = tablequery._parse_search_text(text_value);
-            if (rv.rc) {
-                var rows_to_display = tablequery._get_rows_to_display(rv.parsed_query);
-            }
-        });
-        table_search_text.autocomplete({
-            source: previous_search_text,
-            minLength: 0,
-            select: function( event, ui ) {}
-        });
-        table_search_text.on("autocompleteselect", function(event, ui) {
-            tablequery._table_search_text_on_keyup(null, ui.item.value);
-        });
-        table_search_text.click(function() {
-            table_search_text.autocomplete("search", "");
-            tablequery._table_search_text_on_keyup(undefined, table_search_text.val());
-        });
-        table_search_text.blur(function() {
-            tablequery._table_search_text_on_keyup(undefined, table_search_text.val());
-        });
-    } // if (tablequery.Modernizr.localstorage)
+    table_search_text.click(function() {
+        tablequery._table_search_text_on_keyup(undefined, table_search_text.val());
+    });
+    table_search_text.blur(function() {
+        tablequery._table_search_text_on_keyup(undefined, table_search_text.val());
+    });
     // --------------------------------------------------------------------
 }
