@@ -96,7 +96,7 @@ module.exports = function(grunt) {
                 ''
                 ].join('\n'),
                 wrap: "tablequery",
-                report: 'gzip',
+                //report: 'gzip',
                 //mangle: false,
                 //beautify: true
             },
