@@ -7,7 +7,6 @@ Use textual queries to filter tables.
 -   Execute arbitrarily complex queries, using parenthesis and logical operators.
 -   Confirm the validity of queries in real time; indicated as a coloured outline around the search field.
 -   Execute queries on any column name.
--   Re-use old queries; the last five queries are persisted and available via a dropdown.
 
 ## Example
 
@@ -25,13 +24,8 @@ See `test/basic_example.html` for how to use. In short:
 
 -   Requirements:
     -   jQuery
-    -   jQuery UI
 
 ```html
-<link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet">
-
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 <script src="http://cdn.jsdelivr.net/jquery.tablequeryjs/0.1.3/tablequery.min.js"></script>
 <script type="text/javascript">
   $(document).ready(function() {

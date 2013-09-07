@@ -103,7 +103,7 @@ module.exports = function(grunt) {
             build: {
                 src: [
                     'build/lodash.custom.js',
-                    'build/modernizr.custom.js',
+                    //'build/modernizr.custom.js',
                     //'build/jquery.custom.js',
                     'build/grammar.js',
                     'src/tablequery-core.js'
@@ -132,12 +132,12 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-lodash');
     grunt.loadNpmTasks('grunt-bower-task');
-    grunt.loadNpmTasks('grunt-modernizr');
+    //grunt.loadNpmTasks('grunt-modernizr');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.registerTask('build', ['bower',
                                  'lodash',
-                                 'modernizr',
+                                 //'modernizr',
                                  'shell:jison',
-                                 'shell:modernizr',
+                                 //'shell:modernizr',
                                  'uglify']);
 }
