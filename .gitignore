@@ -5,3 +5,5 @@ build
 lib
 test/*/*.png
 npm-debug.log
+
+*.sublime*
