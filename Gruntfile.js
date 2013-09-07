@@ -42,7 +42,11 @@ module.exports = function(grunt) {
                     'each',
                     'memoize',
                     'debounce',
-                    'contains'
+                    'contains',
+                    'once',
+                    'keys',
+                    'uniqueId',
+                    'extend',
                 ],
                 flags: [
                     '--debug'
@@ -93,7 +97,25 @@ module.exports = function(grunt) {
                 ' * See the License for the specific language governing permissions and',
                 ' * limitations under the License.',
                 ' */',
-                ''
+                '',
+                ' /** ',
+                '  * Lo-Dash 1.3.1 (Custom Build) <http://lodash.com/> ',
+                '  * Build: `lodash modern -o ./dist/lodash.js` ',
+                '  * Copyright 2012-2013 The Dojo Foundation <http://dojofoundation.org/> ',
+                '  * Based on Underscore.js 1.4.4 <http://underscorejs.org/> ',
+                '  * Copyright 2009-2013 Jeremy Ashkenas, DocumentCloud Inc. ',
+                '  * Available under MIT license <http://lodash.com/license> ',
+                '  */ ',
+                '',
+                ' /** Backbone.js 1.0.0',
+                '  *',
+                '  * (c) 2010-2011 Jeremy Ashkenas, DocumentCloud Inc.',
+                '  * (c) 2011-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors',
+                '  * Backbone may be freely distributed under the MIT license.',
+                '  * For all details and documentation:',
+                '  * http://backbonejs.org',
+                '  */',
+                '',
                 ].join('\n'),
                 wrap: "tablequery",
                 //report: 'gzip',
@@ -103,6 +125,7 @@ module.exports = function(grunt) {
             build: {
                 src: [
                     'build/lodash.custom.js',
+                    'src/vendor/backbone.events.js',
                     //'build/modernizr.custom.js',
                     //'build/jquery.custom.js',
                     'build/grammar.js',
@@ -115,7 +138,10 @@ module.exports = function(grunt) {
             files: ['test/grammar/tests.html']
         },
         casperjs: {
-            files: ['test/tablequery-core/*.js'],
+            files: [
+                'test/tablequery-core/*.js',
+                'test/events/*.js',
+            ],
             options: {
                 direct: true,
                 logLevel: "debug"

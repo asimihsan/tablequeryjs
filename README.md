@@ -14,11 +14,7 @@ See the HTML example page online here:
 
 [http://www.asimihsan.com.s3.amazonaws.com/tablequeryjs/test/example_basic.html](http://www.asimihsan.com.s3.amazonaws.com/tablequeryjs/test/example_basic.html)
 
-## Screencast
-
-[![ScreenShot](https://raw.github.com/asimihsan/tablequeryjs/master/doc/tablequeryjs_screencast.jpg)](http://youtu.be/d0VV6Wlj0aM)
-
-## Usage
+## Basic usage
 
 See `test/basic_example.html` for how to use. In short:
 
@@ -35,11 +31,51 @@ See `test/basic_example.html` for how to use. In short:
 </script>
 ```
 
-See `test/example_basic.html` for an example.
+## Events
 
-In order to build the library see "Building and testing" below.
+tablequeryjs allows you to specify functions to be called when actions are
+performed.
 
-## Syntax
+The following events are supported:
+
+- `search`: whenever a search is executed by tablequeryjs. Both successful
+and unsuccessful searches trigger this, and searches that do not alter the
+visibility of the table's rows are also triggered.
+
+Here is an example of using the `search` event to trigger two anonymous
+functions, one after the other.
+
+```html
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="../../build/tablequery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        tablequery.set_table("#table");
+        tablequery.set_table_search_text("#table_search_text");
+
+        $("#trigger1").hide();
+        $("#trigger2").hide();
+        tablequery.on('search', function() {
+            console.log("search triggered (1)");
+            $("#trigger1").show();  
+        });
+        tablequery.on('search', function() {
+            console.log("search triggered (2)");
+            $("#trigger2").show();  
+        });
+    });
+</script>
+```
+
+The above code will call two anonymous functions when a search is executed.
+The first function shows `#trigger1`, and the second function shows
+`#trigger2`.
+
+tablequeryjs uses [http://documentcloud.github.io/backbone/docs/backbone.html#section-13](Backbone.Events),
+and as such also supports `off`, `once`, `trigger`, and `listenTo`. See the
+annotated Backbone.Events source for more information.
+
+## Search syntax
 
 Chain together queries with logical operators, i.e.
 

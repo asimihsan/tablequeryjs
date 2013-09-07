@@ -47,6 +47,9 @@ var parser_exception_message;
 var table_headings = {};
 var table_search_text_keyup_timer;
 
+tablequery = tablequery || {};
+tablequery._.extend(tablequery, tablequery.Events);
+
 tablequery._get_rows_to_display = function(trees) {
     //console.log("get_rows_to_display.");
     //console.log(trees);
@@ -170,6 +173,7 @@ tablequery.set_table_search_text = function(selector) {
     table_search_text = $(selector);
 
     tablequery._table_search_text_on_keyup = function(e, text_value) {
+        tablequery.trigger('search');
         var rv = tablequery._parse_search_text(text_value);
         tablequery._update_table_search_text_warning(rv.rc, false);
         if (rv.rc) {
@@ -201,10 +205,12 @@ tablequery.set_table_search_text = function(selector) {
     });
 
     table_search_text.click(function() {
-        tablequery._table_search_text_on_keyup(undefined, table_search_text.val());
+        tablequery._table_search_text_on_keyup_debounced(undefined,
+                                                         table_search_text.val());
     });
     table_search_text.blur(function() {
-        tablequery._table_search_text_on_keyup(undefined, table_search_text.val());
+        tablequery._table_search_text_on_keyup_debounced(undefined,
+                                                         table_search_text.val());
     });
     // --------------------------------------------------------------------
 }
