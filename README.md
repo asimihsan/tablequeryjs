@@ -71,7 +71,7 @@ The above code will call two anonymous functions when a search is executed.
 The first function shows `#trigger1`, and the second function shows
 `#trigger2`.
 
-tablequeryjs uses [http://documentcloud.github.io/backbone/docs/backbone.html#section-13](Backbone.Events),
+tablequeryjs uses [Backbone.Events](http://documentcloud.github.io/backbone/docs/backbone.html#section-13),
 and as such also supports `off`, `once`, `trigger`, and `listenTo`. See the
 annotated Backbone.Events source for more information.
 
