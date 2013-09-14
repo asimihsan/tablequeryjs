@@ -13,6 +13,8 @@ var push = array.push;
 var slice = array.slice;
 var splice = array.splice;
 
+_ = tablequery._;
+
 // Backbone.Events
 // ---------------
 // A module that can be mixed in to *any object* in order to provide it with
@@ -48,7 +50,7 @@ var Events = {
       if (!eventsApi(this, 'once', name, [callback, context]) || !callback)
           return this;
       var self = this;
-      var once = tablequery._.once(function () {
+      var once = _.once(function () {
           self.off(name, once);
           callback.apply(this, arguments);
       });
@@ -69,7 +71,7 @@ var Events = {
           return this;
       }
 
-      names = name ? [name] : tablequery._.keys(this._events);
+      names = name ? [name] : _.keys(this._events);
       for (i = 0, l = names.length; i < l; i++) {
           name = names[i];
           if (events = this._events[name]) {
@@ -187,10 +189,10 @@ var listenMethods = {
 // Inversion-of-control versions of `on` and `once`. Tell *this* object to
 // listen to an event in another object ... keeping track of what it's
 // listening to.
-tablequery._.each(listenMethods, function (implementation, method) {
+_.each(listenMethods, function (implementation, method) {
     Events[method] = function (obj, name, callback) {
         var listeners = this._listeners || (this._listeners = {});
-        var id = obj._listenerId || (obj._listenerId = tablequery._.uniqueId('l'));
+        var id = obj._listenerId || (obj._listenerId = _.uniqueId('l'));
         listeners[id] = obj;
         if (typeof name === 'object') callback = this;
         obj[implementation](name, callback, this);

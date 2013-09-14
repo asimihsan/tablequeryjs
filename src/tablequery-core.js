@@ -38,6 +38,8 @@ not ('first name' ilike mark or number = 2)
 
 */
 
+_ = tablequery._;
+
 var table; // = $("table");
 var table_parent;
 var table_tbody_rows;
@@ -48,7 +50,7 @@ var table_headings = {};
 var table_search_text_keyup_timer;
 
 tablequery = tablequery || {};
-tablequery._.extend(tablequery, tablequery.Events);
+_.extend(tablequery, tablequery.Events);
 
 tablequery._get_rows_to_display = function(trees) {
     //console.log("get_rows_to_display.");
@@ -74,22 +76,38 @@ tablequery._get_rows_to_display = function(trees) {
             case "NLIKE":
                 var expr = new RegExp(right);
                 break;
+            case "ILIKE_ANY":
+                var expr = new RegExp(left, "i");
+                break;
         } // switch(node_type)
-        var test_for_true = node_type.substring(0,1) != "N";
         if (left in table_headings) {
-            //console.log("left value in table_headings.");
-            var column_index = table_headings[left];
-            return_value = table_tbody_rows.filter(function(i) {
-                text = $(this).children()[column_index].textContent;
-                text = $.trim(text);
-                regexp_result = expr.test(text);
-                if (test_for_true) {
-                    return regexp_result;
-                } else {
-                    return !regexp_result;
+            var column_indices = [table_headings[left]];
+        } else if (node_type === "ILIKE_ANY") {
+            var column_indices = _.values(table_headings);
+        } else {
+            var column_indices = [];
+        }
+        var test_for_true = node_type.substring(0,1) != "N";
+        return_value = table_tbody_rows.filter(function(index, row) {
+            return _.any(
+                _.map(
+                    _.filter($(row).children(), function(column, index) {
+                        return _.contains(column_indices, index);
+                    }),
+                    function(column) {
+                        return $.trim(column.textContent);
+                    }
+                ),
+                function(column_text) {
+                    regexp_result = expr.test(column_text);
+                    if (test_for_true) {
+                        return regexp_result;
+                    } else {
+                        return !regexp_result;
+                    }
                 }
-            });
-        } // if (left in table_headings)
+            );
+        });
     } else {
         //console.log("Interior nodes.");
         var left_trees = tablequery._get_rows_to_display(left);
@@ -99,17 +117,17 @@ tablequery._get_rows_to_display = function(trees) {
         switch(node_type) {
             case "AND":
                 //console.log("AND");
-                return_value = tablequery._.intersection(left_trees, right_trees);
+                return_value = _.intersection(left_trees, right_trees);
                 break;
             case "OR":
                 //console.log("OR");
-                return_value = tablequery._.union(left_trees, right_trees);
+                return_value = _.union(left_trees, right_trees);
                 break;
             case "NOT":
                 //console.log("NOT");
                 var left_tree_indices = {}
-                tablequery._.each(left_trees, function(obj) { left_tree_indices[$(obj).index()] = true; });
-                return_value = tablequery._.filter(table_tbody_rows, function(row) {
+                _.each(left_trees, function(obj) { left_tree_indices[$(obj).index()] = true; });
+                return_value = _.filter(table_tbody_rows, function(row) {
                     return !($(row).index() in left_tree_indices);
                 });
         } // switch(node_type)
@@ -122,7 +140,7 @@ tablequery._get_rows_to_display = function(trees) {
     //console.log(return_value);
     return return_value;
 }
-tablequery._get_rows_to_display = tablequery._.memoize(tablequery._get_rows_to_display);
+tablequery._get_rows_to_display = _.memoize(tablequery._get_rows_to_display);
 
 tablequery._parse_search_text = function(search_text) {
     var is_parse_successful = true;
@@ -181,7 +199,7 @@ tablequery.set_table_search_text = function(selector) {
             var rows_to_display = tablequery._get_rows_to_display(rv.parsed_query);
             table.detach();
             tablequery.hide_selector(table_tbody_rows);
-            tablequery._.each(rows_to_display, function(row) { tablequery.show_selector($(row)); });
+            _.each(rows_to_display, function(row) { tablequery.show_selector($(row)); });
             table_parent.append(table);
         } else {
             if (!previous_query_failed) {
@@ -190,7 +208,7 @@ tablequery.set_table_search_text = function(selector) {
             previous_query_failed = true;
         }
     }
-    tablequery._table_search_text_on_keyup_debounced = tablequery._.debounce(tablequery._table_search_text_on_keyup, 500);
+    tablequery._table_search_text_on_keyup_debounced = _.debounce(tablequery._table_search_text_on_keyup, 500);
     table_search_text.keyup(function(e) {
         if ((e.keyCode || e.which || e.charCode || 0) === 13) {
             tablequery._table_search_text_on_keyup(e, table_search_text.val());
