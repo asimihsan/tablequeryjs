@@ -62,7 +62,7 @@
 "or"                      return 'OR';
 "||"                      return 'OR';
 
-[A-Za-z0-9_\-\.]+         return 'IDENT';
+[A-Za-z0-9_\-\.:]+        return 'IDENT';
 
 \s+                       /* */
 .                         return 'INVALID';
@@ -109,6 +109,14 @@ query
             {$$ = ["NLIKE", $1.toLowerCase(), $3];}
     |   literal NILIKE literal
             {$$ = ["NILIKE", $1.toLowerCase(), $3];}
+    |   literal GT literal
+            {$$ = ["GT", $1.toLowerCase(), $3];}
+    |   literal GTE literal
+            {$$ = ["GTE", $1.toLowerCase(), $3];}
+    |   literal LT literal
+            {$$ = ["LT", $1.toLowerCase(), $3];}
+    |   literal LTE literal
+            {$$ = ["LTE", $1.toLowerCase(), $3];}
     |   literal
         {$$ = ["ILIKE_ANY", $1]}
     ;

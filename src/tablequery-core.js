@@ -47,6 +47,7 @@ var table_search_text; // = $("#table_search_text");
 
 var parser_exception_message;
 var table_headings = {};
+var table_column_types = {};
 var table_search_text_keyup_timer;
 
 tablequery = tablequery || {};
@@ -88,22 +89,56 @@ tablequery._get_rows_to_display = function(trees) {
             var column_indices = [];
         }
         var test_for_true = node_type.substring(0,1) != "N";
+        if (!(_.isUndefined(right))) {
+            var date_range = tablequery.get_date_range(node_type, right);
+            var time_range = tablequery.get_time_range(node_type, right);
+        }
         return_value = table_tbody_rows.filter(function(index, row) {
             return _.any(
-                _.map(
-                    _.filter($(row).children(), function(column, index) {
-                        return _.contains(column_indices, index);
-                    }),
-                    function(column) {
-                        return $.trim(column.textContent);
+                _.map($(row).children(), function(column, index) {
+                    if (!(_.contains(column_indices, index))) {
+                        return;
                     }
-                ),
-                function(column_text) {
-                    regexp_result = expr.test(column_text);
+                    var text = $.trim(column.textContent);
+                    switch(table_column_types[index]) {
+                        case "date":
+                            return {"type": "date",
+                                    "value": tablequery._get_datetime(text)};
+                        case "time":
+                            return {"type": "time",
+                                    "value": tablequery._get_time(text)};
+                        case "number":
+                            return {"type": "number",
+                                    "value": parseInt(text, 10)};
+                        case "text":
+                            return {"type": "text",
+                                    "value": text};
+                    }
+                }),
+                function(data) {
+                    if (_.isUndefined(data)) {
+                        return false;
+                    }
+                    switch(data.type) {
+                        case "time":
+                            if (_.isUndefined(time_range))
+                                return false;
+                            result = time_range.contains(data.value);
+                            break;
+                        case "date":
+                            if (_.isUndefined(date_range))
+                                return false;
+                            result = date_range.contains(data.value);
+                            break;
+                        case "number":
+                        case "text":
+                            result = expr.test(data.value);
+                            break;
+                    }
                     if (test_for_true) {
-                        return regexp_result;
+                        return result;
                     } else {
-                        return !regexp_result;
+                        return !result;
                     }
                 }
             );
@@ -164,18 +199,31 @@ tablequery._update_table_search_text_warning = function(is_parse_successful, cle
     }
 }
 
-tablequery._update_table_headings = function() {
-    $.map(table.find("th"), function(el, i) {
+tablequery._update_table_lookups = function() {
+    table_headings = {};
+    table.find("th").each(function(i, el) {
         table_headings[$.trim(el.textContent.toLowerCase())] = i;
     });
-    //console.log(table_headings);
+    table_column_types = {};
+    table.find("tr").eq(1).children().each(function(i, el) {
+        var text = $.trim(el.textContent);
+        if (tablequery._get_datetime(text).isValid()) {
+            table_column_types[i] = "date";
+        } else if (tablequery._get_time(text).isValid()) {
+            table_column_types[i] = "time";
+        } else if (_.isNumber(text)) {
+            table_column_types[i] = "number";
+        } else {
+            table_column_types[i] = "text";
+        }
+    });
 }
 
 tablequery.set_table = function(selector) {
     table = $(selector);
     table_parent = table.parent();
     table_tbody_rows = table.find("tbody tr");
-    tablequery._update_table_headings();
+    tablequery._update_table_lookups();
 }
 
 tablequery.hide_selector = function(selector) {
@@ -191,10 +239,10 @@ tablequery.set_table_search_text = function(selector) {
     table_search_text = $(selector);
 
     tablequery._table_search_text_on_keyup = function(e, text_value) {
-        tablequery.trigger('search');
         var rv = tablequery._parse_search_text(text_value);
         tablequery._update_table_search_text_warning(rv.rc, false);
         if (rv.rc) {
+            tablequery._update_table_lookups();
             previous_query_failed = false;
             var rows_to_display = tablequery._get_rows_to_display(rv.parsed_query);
             table.detach();
@@ -207,6 +255,7 @@ tablequery.set_table_search_text = function(selector) {
             }
             previous_query_failed = true;
         }
+        tablequery.trigger('search');
     }
     tablequery._table_search_text_on_keyup_debounced = _.debounce(tablequery._table_search_text_on_keyup, 500);
     table_search_text.keyup(function(e) {
@@ -231,4 +280,112 @@ tablequery.set_table_search_text = function(selector) {
                                                          table_search_text.val());
     });
     // --------------------------------------------------------------------
+}
+
+tablequery._now = function() {
+    return moment();
+}
+
+tablequery._get_time = function(string) {
+    return moment(string, [
+        'ss',
+        'mm:ss',
+        'HH:mm:ss',
+    ]);
+}
+tablequery._get_time = _.memoize(tablequery._get_time);
+
+tablequery._get_datetime = function(string) {
+    return moment(string, [
+        "YYYY-MM-DD",
+        "YYYY-MM-DD HH",
+        "YYYY-MM-DD HH:mm",
+        "YYYY-MM-DD HH:mm:ss",
+        "YYYY-MM-DD HH:mm:ssZ",
+        "YYYY-MM-DDTHH:mm:ss",
+        "YYYY-MM-DDTHH:mm:ssZ",
+    ]);
+}
+tablequery._get_datetime = _.memoize(tablequery._get_datetime);
+
+tablequery.get_time_range = function(node_type, query) {
+    var time = tablequery._get_time(query);
+    if (!(time.isValid()))
+        return;
+    switch(time._f) {
+        case "ss":
+            var precision = "second";
+            break;
+        case "mm:ss":
+            var precision = "minute";
+            break;
+        case "HH:mm:ss":
+            var precision = "hour";
+            break;
+    }
+    switch(node_type) {
+        case "EQ":
+        case "NEQ":
+            var time_range = moment().range(moment(time).startOf(precision),
+                                            moment(time).endOf(precision));
+            break;
+        case "LTE":
+        case "LT":
+            var time_range = moment().range(moment(0),
+                                            moment(time));
+            break;
+        case "GTE":
+        case "GT":
+            var time_range = moment().range(moment(time),
+                                            moment("9999"));
+            break;
+    }
+    return time_range;
+}
+
+tablequery.get_date_range = function(node_type, query) {
+    var now = tablequery._now();
+    var duration, datetime, datetimeStart, datetimeEnd;
+    if (query === "today") {
+        duration = moment.duration(0, 'days');
+    } else if (query === "yesterday") {
+        duration = moment.duration(1, 'days');
+    } else {
+        datetime = tablequery._get_datetime(query);
+        if (!(datetime.isValid()))
+            return;
+    }
+    switch(node_type) {
+        case "EQ":
+        case "NEQ":
+            if (!(_.isUndefined(duration))) {
+                var date_range = moment().range(moment(now - duration).startOf('day'),
+                                                moment(now - duration).endOf('day'));
+            } else {
+                var date_range = moment().range(moment(datetime).startOf('day'),
+                                                moment(datetime).endOf('day'));
+            }
+            break;
+        case "LTE":
+        case "LT":
+            if (!(_.isUndefined(duration))) {
+                var date_range = moment().range(moment(0),
+                                                moment(now - duration).endOf('day'));
+            } else {
+                var date_range = moment().range(moment(0),
+                                                moment(datetime));
+            }
+            break;
+        case "GTE":
+        case "GT":
+            if (!(_.isUndefined(duration))) {
+                var date_range = moment().range(moment(now - duration).startOf('day'),
+                                                moment("9999"));
+            } else {
+                var date_range = moment().range(moment(datetime),
+                                                moment("9999"));
+            }
+            break;
+    }
+    return date_range;
 }
