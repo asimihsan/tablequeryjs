@@ -50,6 +50,13 @@ var table_search_text_keyup_timer;
 tablequery = tablequery || {};
 tablequery._.extend(tablequery, tablequery.Events);
 
+grammar.yy.parseError = function(str, hash) {
+    grammar.error = {'str': str};
+    tablequery._.extend(grammar.error, hash);
+    throw new Error(str);
+}
+tablequery.grammar = grammar;
+
 tablequery._get_rows_to_display = function(trees) {
     //console.log("get_rows_to_display.");
     //console.log(trees);
@@ -130,10 +137,11 @@ tablequery._parse_search_text = function(search_text) {
     try {
         parsed_query = grammar.parse(search_text);
     } catch(e) {
-        parser_exception_message = e.message;
         is_parse_successful = false;
     }
-    return {"rc": is_parse_successful, "parsed_query": parsed_query};
+    return {"rc": is_parse_successful,
+            "parsed_query": parsed_query,
+            "error": tablequery._.clone(grammar.error)};
 }
 
 tablequery._update_table_search_text_warning = function(is_parse_successful, clear) {
@@ -184,6 +192,7 @@ tablequery.set_table_search_text = function(selector) {
             tablequery._.each(rows_to_display, function(row) { tablequery.show_selector($(row)); });
             table_parent.append(table);
         } else {
+            console.log(rv.error);
             if (!previous_query_failed) {
                 tablequery.show_selector(table_tbody_rows);
             }
