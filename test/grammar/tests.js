@@ -25,3 +25,18 @@ test( "simple two statements with OR and NOT", function() {
                 ['EQ', 'index', '5'],
                 ['NOT', ['EQ', 'first name', 'dude']]]);
 });
+
+test( "any column with ident literal", function() {
+    deepEqual(grammar.parse("index"),
+              ['ILIKE_ANY', 'index']);
+});
+
+test( "any column with single quoted literal", function() {
+    deepEqual(grammar.parse("'fruity foobar'"),
+              ['ILIKE_ANY', "fruity foobar"]);
+});
+
+test( "any column with double quoted literal", function() {
+    deepEqual(grammar.parse('"fruity foobar"'),
+              ['ILIKE_ANY', "fruity foobar"]);
+});

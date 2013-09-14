@@ -82,8 +82,10 @@
 
 statement
     :   query EOF
-            {  typeof console !== 'undefined' ? console.log($1) : print($1);
-               return $1; }
+            {  
+               //typeof console !== 'undefined' ? console.log($1) : print($1);
+               return $1;
+            }
     ;
 
 query
@@ -107,6 +109,8 @@ query
             {$$ = ["NLIKE", $1.toLowerCase(), $3];}
     |   literal NILIKE literal
             {$$ = ["NILIKE", $1.toLowerCase(), $3];}
+    |   literal
+        {$$ = ["ILIKE_ANY", $1]}
     ;
 
 literal
