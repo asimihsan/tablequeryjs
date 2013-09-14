@@ -9,6 +9,9 @@ env:
         - secure: "Jr7Pa0TfTa3c866fniYqCXHiWvXsYgv2wzYRQkueMSmuafngV31dcrCjj/0kenUA2R39/ZO/HctF1bl6fz3KfypdPrwUOYYgeECX7r1OKGKc2qHqJzAKaem+B3r+oJaFRY+hKdBc9KL09gkUdGZueOEgoYaAHWGV4XYGl1cTh7I="
         - secure: "aevPkl+KeTbe9+Du0pyTz1atRtKzI+oU0h9pT7hedQ1bCfUH5ANlnqNs01o1qA0ijDyWlH/ZnfmY4dgTq+MQXnmW+7OLlevrLrwQwlAyv82psNfILYNWQWNB1MVnSD3aYVRX/GBrlUvRBdMJWHZ3fYCv2Fd0WWrzEl7NE1d91T0="
 
+before_install:
+    -   curl https://npmjs.org/install.sh | sh
+
 before_script:
     -   git clone git://github.com/n1k0/casperjs.git
     -   cd casperjs

@@ -141,7 +141,7 @@ module.exports = function(grunt) {
         },
         casperjs: {
             files: [
-                'test/tablequery-core/*.js',
+                'test/tablequery-core/test*.js',
                 'test/events/*.js',
             ],
             options: {
