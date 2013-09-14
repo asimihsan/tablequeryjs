@@ -42,6 +42,8 @@ module.exports = function(grunt) {
                     'extend',
                     'filter',
                     'intersection',
+                    'isNumber',
+                    'isUndefined',
                     'keys',
                     'map',
                     'memoize',
@@ -118,11 +120,17 @@ module.exports = function(grunt) {
                 '  * http://backbonejs.org',
                 '  */',
                 '',
+                ' //! moment.js',
+                ' //! version : 2.2.1',
+                ' //! authors : Tim Wood, Iskren Chernev, Moment.js contributors',
+                ' //! license : MIT',
+                ' //! momentjs.com',
+                '',
                 ].join('\n'),
                 wrap: "tablequery",
                 //report: 'gzip',
-                //mangle: false,
-                //beautify: true
+                mangle: false,
+                beautify: true,
             },
             build: {
                 src: [
@@ -130,6 +138,8 @@ module.exports = function(grunt) {
                     'src/vendor/backbone.events.js',
                     //'build/modernizr.custom.js',
                     //'build/jquery.custom.js',
+                    'bower_components/moment/moment.js',
+                    'bower_components/moment-range/lib/moment-range.js',
                     'build/grammar.js',
                     'src/tablequery-core.js'
                 ],

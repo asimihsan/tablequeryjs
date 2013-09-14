@@ -7,6 +7,15 @@ Use textual queries to filter tables.
 -   Execute arbitrarily complex queries, using parenthesis and logical operators.
 -   Confirm the validity of queries in real time; indicated as a coloured outline around the search field.
 -   Execute queries on any column name.
+-   Search on ISO 8601 formatted datetime fields (i.e. `YYYY-MM-DD HH:mm:ss`,
+with the `T` separator as optional and the timezone as optional), for example:
+    -   `datetime = today`
+    -   `datetime = yesterday`
+    -   `datetime > 2013-08-01`
+-   Search on `HH:mm:ss` time fields, for example:
+    -   `time = 1` (equal to one second)
+    -   `time > 2` (greater than two seconds)
+    -   `time < 01:00` (smaller than one minute)
 
 ## Example
 
