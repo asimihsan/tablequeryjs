@@ -83,7 +83,7 @@ module.exports = function(grunt) {
             options: {
                 banner: [
                 '/*! ',
-                ' * tablequeryjs v0.1.3',
+                ' * tablequeryjs v0.1.4',
                 ' * https://github.com/asimihsan/tablequeryjs',
                 ' * Date: <%= grunt.template.today("yyyy-mm-dd") %>',
                 ' *',
