@@ -47,6 +47,8 @@ module.exports = function(grunt) {
                     'keys',
                     'uniqueId',
                     'extend',
+                    'clone',
+                    'invert',
                 ],
                 flags: [
                     '--debug'
@@ -119,8 +121,8 @@ module.exports = function(grunt) {
                 ].join('\n'),
                 wrap: "tablequery",
                 //report: 'gzip',
-                //mangle: false,
-                //beautify: true
+                mangle: false,
+                beautify: true
             },
             build: {
                 src: [
