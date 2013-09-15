@@ -207,11 +207,12 @@ tablequery._update_table_lookups = function() {
     table_column_types = {};
     table.find("tr").eq(1).children().each(function(i, el) {
         var text = $.trim(el.textContent);
-        if (tablequery._get_datetime(text).isValid()) {
-            table_column_types[i] = "date";
-        } else if (tablequery._get_time(text).isValid()) {
+        if (tablequery._get_time(text).isValid()) {
             table_column_types[i] = "time";
-        } else if (_.isNumber(text)) {
+        } else if (tablequery._get_datetime(text).isValid()) {
+            table_column_types[i] = "date";
+        } else if (!(_.isNaN(parseInt(text, 10))) &&
+                    (_.isNumber(parseInt(text, 10)))) {
             table_column_types[i] = "number";
         } else {
             table_column_types[i] = "text";
@@ -287,8 +288,10 @@ tablequery._now = function() {
 }
 
 tablequery._get_time = function(string) {
+    if (!((string.length == 5) || string.length == 8)) {
+        return moment("-");
+    }
     return moment(string, [
-        'ss',
         'mm:ss',
         'HH:mm:ss',
     ]);
@@ -296,15 +299,10 @@ tablequery._get_time = function(string) {
 tablequery._get_time = _.memoize(tablequery._get_time);
 
 tablequery._get_datetime = function(string) {
-    return moment(string, [
-        "YYYY-MM-DD",
-        "YYYY-MM-DD HH",
-        "YYYY-MM-DD HH:mm",
-        "YYYY-MM-DD HH:mm:ss",
-        "YYYY-MM-DD HH:mm:ssZ",
-        "YYYY-MM-DDTHH:mm:ss",
-        "YYYY-MM-DDTHH:mm:ssZ",
-    ]);
+    if (string.length < 10) {
+        return moment("-");
+    }
+    return moment(string);
 }
 tablequery._get_datetime = _.memoize(tablequery._get_datetime);
 
