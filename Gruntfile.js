@@ -42,6 +42,7 @@ module.exports = function(grunt) {
                     'extend',
                     'filter',
                     'intersection',
+                    'isNaN',
                     'isNumber',
                     'isUndefined',
                     'keys',
