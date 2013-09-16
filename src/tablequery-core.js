@@ -108,8 +108,10 @@ tablequery._get_rows_to_display = function(trees) {
                             return {"type": "time",
                                     "value": tablequery._get_time(text)};
                         case "number":
-                            return {"type": "number",
-                                    "value": parseInt(text, 10)};
+                            if (_isNumber(text)) {
+                                return {"type": "number",
+                                        "value": parseInt(text, 10)};                                
+                            }
                         case "text":
                             return {"type": "text",
                                     "value": text};
@@ -207,12 +209,12 @@ tablequery._update_table_lookups = function() {
     table_column_types = {};
     table.find("tr").eq(1).children().each(function(i, el) {
         var text = $.trim(el.textContent);
-        if (tablequery._get_datetime(text).isValid()) {
+        if (_isNumber(text)) {
+            table_column_types[i] = "number";
+        } else if (tablequery._get_datetime(text).isValid()) {
             table_column_types[i] = "date";
         } else if (tablequery._get_time(text).isValid()) {
             table_column_types[i] = "time";
-        } else if (_.isNumber(text)) {
-            table_column_types[i] = "number";
         } else {
             table_column_types[i] = "text";
         }
@@ -287,16 +289,23 @@ tablequery._now = function() {
 }
 
 tablequery._get_time = function(string) {
-    return moment(string, [
+    if (!(/^(\d{1,2}|\d{1,2}:\d{2}|\d{1,2}:\d{2}:\d{2})$/.test(string))) {
+        return moment("-");
+    }        
+    return_value = moment(string, [
         'ss',
         'mm:ss',
         'HH:mm:ss',
     ]);
+    if (!(_.contains(_.functions(return_value), 'isValid'))) {
+        return moment("-");
+    }
+    return return_value;
 }
 tablequery._get_time = _.memoize(tablequery._get_time);
 
 tablequery._get_datetime = function(string) {
-    return moment(string, [
+    return_value = moment(string, [
         "YYYY-MM-DD",
         "YYYY-MM-DD HH",
         "YYYY-MM-DD HH:mm",
@@ -305,6 +314,10 @@ tablequery._get_datetime = function(string) {
         "YYYY-MM-DDTHH:mm:ss",
         "YYYY-MM-DDTHH:mm:ssZ",
     ]);
+    if (!(_.contains(_.functions(return_value), 'isValid'))) {
+        return moment("-");
+    }
+    return return_value;
 }
 tablequery._get_datetime = _.memoize(tablequery._get_datetime);
 
@@ -389,3 +402,8 @@ tablequery.get_date_range = function(node_type, query) {
     }
     return date_range;
 }
+
+_isNumber = function(string) {
+    return /^[0-9]+$/.test(string);
+}
+_isNumber = _.memoize(_isNumber);

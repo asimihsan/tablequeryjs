@@ -41,6 +41,7 @@ module.exports = function(grunt) {
                     'each',
                     'extend',
                     'filter',
+                    'functions',
                     'intersection',
                     'isNumber',
                     'isUndefined',
@@ -152,6 +153,7 @@ module.exports = function(grunt) {
         casperjs: {
             files: [
                 'test/tablequery-core/test*.js',
+                'test/tablequery-core-robustness/test*.js',
                 'test/events/*.js',
             ],
             options: {
