@@ -31,7 +31,7 @@ See `test/basic_example.html` for how to use. In short:
     -   jQuery
 
 ```html
-<script src="http://cdn.jsdelivr.net/jquery.tablequeryjs/0.1.4/tablequery.min.js"></script>
+<script src="http://cdn.jsdelivr.net/jquery.tablequeryjs/0.1.5/tablequery.min.js"></script>
 <script type="text/javascript">
   $(document).ready(function() {
     tablequery.set_table("#table");
