@@ -157,8 +157,7 @@ tablequery._get_rows_to_display = function(trees) {
                 return_value = _.intersection(left_trees, right_trees);
                 break;
             case "OR":
-                //console.log("OR");
-                return_value = _.union(left_trees, right_trees);
+                return_value = left_trees.add(right_trees);
                 break;
             case "NOT":
                 //console.log("NOT");
