@@ -21,7 +21,7 @@ with the `T` separator as optional and the timezone as optional), for example:
 
 See the HTML example page online here:
 
-[http://www.asimihsan.com.s3.amazonaws.com/tablequeryjs/test/example_basic.html](http://www.asimihsan.com.s3.amazonaws.com/tablequeryjs/test/example_basic.html)
+[http://www.asimihsan.com/tablequeryjs/test/example_basic.html](http://www.asimihsan.com/tablequeryjs/test/example_basic.html)
 
 ## Basic usage
 
