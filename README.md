@@ -133,3 +133,7 @@ npm install
 grunt build
 grunt test
 ```
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/asimihsan/tablequeryjs/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
