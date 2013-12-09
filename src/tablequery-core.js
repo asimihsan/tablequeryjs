@@ -225,6 +225,7 @@ tablequery.set_table = function(selector) {
     table_parent = table.parent();
     table_tbody_rows = table.find("tbody tr");
     tablequery._update_table_lookups();
+    tablequery._get_rows_to_display.cache = {}
 }
 
 tablequery.hide_selector = function(selector) {
@@ -288,6 +289,7 @@ tablequery._now = function() {
 }
 
 tablequery._get_time = function(string) {
+    string = string.replace(/[^a-z0-9z\- :]+/gi, '');
     if (!(/^(\d{1,2}|\d{1,2}:\d{2}|\d{1,2}:\d{2}:\d{2})$/.test(string))) {
         return moment("-");
     }        
@@ -304,6 +306,7 @@ tablequery._get_time = function(string) {
 tablequery._get_time = _.memoize(tablequery._get_time);
 
 tablequery._get_datetime = function(string) {
+    string = string.replace(/[^a-z0-9z\- :]+/gi, '');
     return_value = moment(string, [
         "YYYY-MM-DD",
         "YYYY-MM-DD HH",
