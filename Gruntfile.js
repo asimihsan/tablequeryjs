@@ -131,7 +131,7 @@ module.exports = function(grunt) {
                 wrap: "tablequery",
                 //report: 'gzip',
                 //mangle: false,
-                //beautify: true,
+                //beautify: true
             },
             build: {
                 src: [
@@ -179,5 +179,6 @@ module.exports = function(grunt) {
                                  //'modernizr',
                                  'shell:jison',
                                  //'shell:modernizr',
-                                 'uglify']);
+                                 'uglify'
+                                 ]);
 }
