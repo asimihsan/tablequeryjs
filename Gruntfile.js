@@ -154,6 +154,7 @@ module.exports = function(grunt) {
             files: [
                 'test/tablequery-core/test*.js',
                 'test/tablequery-core-robustness/test*.js',
+                'test/tablequery-core-robustness-datetime/test*.js',
                 'test/events/*.js',
             ],
             options: {
