@@ -52,9 +52,6 @@ module.exports = function(grunt) {
                     'union',
                     'uniqueId',
                     'values',
-                ],
-                flags: [
-                    '--debug'
                 ]
             }
         },
