@@ -13,23 +13,13 @@
     "tests"
   ],
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-qunit": "~0.2.2",
-    "grunt-cli": "~0.1.9",
-    "lodash": "~2.0.0",
-    "closure-compiler": "~0.2.2",
-    "uglify-js": "~2.4.0",
-    "grunt-contrib-uglify": "~0.2.4",
-    "grunt-modernizr": "~0.3.0",
-    "grunt-lodash": "~0.3.0",
-    "grunt-bower-task": "~0.3.2",
-    "grunt-shell": "~0.3.1",
-    "jison": "~0.4.13",
-    "jquery-builder": "~0.5.0",
-    "phantomjs": "~1.9.2-0",
-    "grunt-casperjs": "~1.0.9"
-  },
-  "dependencies": {
-    "bower": "~1.2.6"
+    "closure-compiler": "^0.2.6",
+    "grunt": "^0.4.5",
+    "grunt-casperjs": "^2.1.0",
+    "grunt-contrib-qunit": "^0.5.2",
+    "grunt-contrib-uglify": "^0.7.0",
+    "grunt-shell": "^1.1.1",
+    "phantomjs": "^1.9.15",
+    "uglify-js": "^2.4.16"
   }
 }
