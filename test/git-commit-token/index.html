@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Basic example</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+        <script src="../../build/tablequery.js"></script>
+        <script type="text/javascript">
+          $(document).ready(function() {
+            tablequery.set_table("#table");
+            tablequery.set_table_search_text("#table_search_text");
+          });
+        </script>
+
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+              <div class="span8 offset2">
+                <input style="width: 100%;" type="text" placeholder="Specify filter here..." id="table_search_text">
+                <table class="table" id="table">
+                  <thead>
+                    <tr>
+                      <th>A</th>
+                      <th>B</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>test_that_column_A_matches @ 75b1f2c</td>
+                      <td>test_that_column_B_matches @ xxx</td>
+                    </tr>
+                    <tr>
+                      <td>test_that_column_A_matches @</td>
+                      <td>test_that_column_B_matches @ xxx</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+        </div>
+    </body>
+</html>
