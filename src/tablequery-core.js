@@ -302,10 +302,11 @@ tablequery._.extend(tablequery, (function() {
     tablequery._get_time = tablequery._.memoize(tablequery._get_time);
 
     tablequery._get_datetime = function(string) {
+        if (!(/^\d{4}-\d{2}-\d{2}(( |T)\d{2}:\d{2}:\d{2}(Z)?)?$/.test(string))) {
+            return moment("-");
+        }                
         return_value = moment(string, [
             "YYYY-MM-DD",
-            "YYYY-MM-DD HH",
-            "YYYY-MM-DD HH:mm",
             "YYYY-MM-DD HH:mm:ss",
             "YYYY-MM-DD HH:mm:ssZ",
             "YYYY-MM-DDTHH:mm:ss",
