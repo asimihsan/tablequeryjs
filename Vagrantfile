@@ -45,10 +45,10 @@ Vagrant.configure(2) do |config|
       sed -i 's/.*root._ = lodash;/\/\/root._ = lodash;/g' build/lodash.custom.js
     grunt build
     ccjs build/tablequery.js > build/tablequery.min.js
-    grunt test
-
     rm -rf /vagrant/build/
     mkdir -p /vagrant/build/
     cp build/tablequery*.js /vagrant/build/
+
+    grunt test
   SHELL
 end
