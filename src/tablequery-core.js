@@ -52,8 +52,8 @@ tablequery._.extend(tablequery, (function() {
     var table_search_text_keyup_timer;
 
     tablequery._get_rows_to_display = function(trees) {
-        console.log("get_rows_to_display.");
-        console.log(trees);
+        //console.log("get_rows_to_display.");
+        //console.log(trees);
         var return_value;
         var node_type = trees[0];
         var left = trees[1];
@@ -61,7 +61,7 @@ tablequery._.extend(tablequery, (function() {
             var right = trees[2];
         }
         if (!($.isArray(left))) {
-            console.log("Child nodes.");
+            //console.log("Child nodes.");
             switch(node_type) {
                 case "EQ":
                 case "NEQ":
@@ -144,21 +144,21 @@ tablequery._.extend(tablequery, (function() {
                 );
             });
         } else {
-            console.log("Interior nodes.");
+            //console.log("Interior nodes.");
             var left_trees = tablequery._get_rows_to_display(left);
             if (trees.length == 3) {
                 var right_trees = tablequery._get_rows_to_display(right);
             }
             switch(node_type) {
                 case "AND":
-                    console.log("AND");
+                    //console.log("AND");
                     return_value = tablequery._.intersection(left_trees, right_trees);
                     break;
                 case "OR":
                     return_value = left_trees.add(right_trees);
                     break;
                 case "NOT":
-                    console.log("NOT");
+                    //console.log("NOT");
                     var left_tree_indices = {}
                     tablequery._.each(left_trees, function(obj) { left_tree_indices[$(obj).index()] = true; });
                     return_value = tablequery._.filter(table_tbody_rows, function(row) {
@@ -167,11 +167,11 @@ tablequery._.extend(tablequery, (function() {
             } // switch(node_type)
         } // if (!($.isArray(left)))
         if (!return_value) {
-            console.log("no return value, return all rows.");
+            //console.log("no return value, return all rows.");
             return_value = table_tbody_rows;
         }
-        console.log("returning")
-        console.log(return_value);
+        //console.log("returning")
+        //console.log(return_value);
         return return_value;
     }
     tablequery._get_rows_to_display = tablequery._.memoize(tablequery._get_rows_to_display);
@@ -292,7 +292,7 @@ tablequery._.extend(tablequery, (function() {
         return_value = moment(string, [
             'ss',
             'mm:ss',
-            'HH:mm:ss',
+            'HH:mm:ss'
         ]);
         if (!(tablequery._.contains(tablequery._.functions(return_value), 'isValid'))) {
             return moment("-");
@@ -309,7 +309,7 @@ tablequery._.extend(tablequery, (function() {
             "YYYY-MM-DD HH:mm:ss",
             "YYYY-MM-DD HH:mm:ssZ",
             "YYYY-MM-DDTHH:mm:ss",
-            "YYYY-MM-DDTHH:mm:ssZ",
+            "YYYY-MM-DDTHH:mm:ssZ"
         ]);
         if (!(tablequery._.contains(tablequery._.functions(return_value), 'isValid'))) {
             return moment("-");
