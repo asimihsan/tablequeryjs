@@ -47,6 +47,7 @@ module.exports = function(grunt) {
         },
         casperjs: {
             files: [
+                'test/dependency-leakage/*.js',
                 'test/tablequery-core/test*.js',
                 'test/tablequery-core-robustness/test*.js',
                 'test/events/*.js',
