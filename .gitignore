@@ -7,3 +7,4 @@ test/*/*.png
 npm-debug.log
 
 *.sublime*
+.vagrant

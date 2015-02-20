@@ -1,6 +1,4 @@
-var casper = require('casper').create({
-    clientScripts: ["lib/jquery/jquery.js"]
-});
+
 var x = require('casper').selectXPath;
 
 casper.start('./test/tablequery-core/index.html', function() {
@@ -8,6 +6,7 @@ casper.start('./test/tablequery-core/index.html', function() {
 });
 
 casper.then(function() {
+    this.page.injectJs('lib/jquery/jquery.js');
     this.test.assertExists("#table_search_text");
     this.evaluate(function() {
         $("#table_search_text").val("date = today")
@@ -23,6 +22,5 @@ casper.then(function() {
 });
 
 casper.run(function() {
-    this.test.renderResults(true);
     this.test.done();
 });
