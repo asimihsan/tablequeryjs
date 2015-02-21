@@ -51,6 +51,24 @@ tablequery._.extend(tablequery, (function() {
     var table_column_types = {};
     var table_search_text_keyup_timer;
 
+    // TODO this is O(n^2) time O(1) space. why can't I sort both lists
+    // then comparefor O(nlogn) time O(1) space, or even put one list
+    // into a hashmap then check the other for O(n) time and O(n) space?
+    // The catch is we're dealing with jQuery DOM objects, neither sorting
+    // nor putting into hash tables seems to work. Need comparators or
+    // hash functions.
+    function intersection(left, right) {
+        var result = [];
+        tablequery._.each(left, function(l) {
+            tablequery._.each(right, function(r) {
+                if (l === r) {
+                    result.push(l);
+                }
+            });
+        });
+        return result;
+    }
+
     tablequery._get_rows_to_display = function(trees) {
         //console.log("get_rows_to_display.");
         //console.log(trees);
@@ -152,7 +170,7 @@ tablequery._.extend(tablequery, (function() {
             switch(node_type) {
                 case "AND":
                     //console.log("AND");
-                    return_value = tablequery._.intersection(left_trees, right_trees);
+                    return_value = intersection(left_trees, right_trees);
                     break;
                 case "OR":
                     return_value = left_trees.add(right_trees);

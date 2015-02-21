@@ -39,7 +39,7 @@ Vagrant.configure(2) do |config|
     npm install
     yes yes | bower install
     lodash compat --development \
-      include=once,keys,each,uniqueId,extend,intersection,filter,values,isUndefined,map,contains,memoize,debounce,functions,any,isFunction \
+      include=once,keys,each,uniqueId,extend,filter,values,isUndefined,map,contains,memoize,debounce,functions,any,isFunction \
       iife="var tablequery = tablequery || {}; tablequery._ = (function() { %output%; return lodash; })();" \
       exports=global \
       --output build/lodash.custom.js && \
