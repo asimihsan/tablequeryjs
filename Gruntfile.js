@@ -47,6 +47,7 @@ module.exports = function(grunt) {
         },
         casperjs: {
             files: [
+                'test/set-filter/*.js',
                 'test/git-commit-token/*.js',
                 'test/dependency-leakage/*.js',
                 'test/tablequery-core/test*.js',

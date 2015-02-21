@@ -14,8 +14,9 @@ Vagrant.configure(2) do |config|
     echo 'export PATH=$HOME/local/bin:$HOME/npm/bin:$PATH' >> $HOME/.bashrc
     echo 'npm config set prefix $HOME/npm' >> $HOME/.bashrc
     . $HOME/.bashrc
-    rm -rf $HOME/npm
-    mkdir -p $HOME/npm/bin
+    export PATH=$HOME/local/bin:$HOME/npm/bin:$PATH
+    npm config set prefix $HOME/npm
+    sudo chown -R vagrant:vagrant $HOME/npm
     npm cache clean
     npm install -g grunt-cli
     grunt --version
@@ -38,7 +39,7 @@ Vagrant.configure(2) do |config|
     npm install
     yes yes | bower install
     lodash compat --development \
-      include=once,keys,each,uniqueId,extend,intersection,filter,values,isUndefined,map,contains,memoize,debounce,functions,any \
+      include=once,keys,each,uniqueId,extend,intersection,filter,values,isUndefined,map,contains,memoize,debounce,functions,any,isFunction \
       iife="var tablequery = tablequery || {}; tablequery._ = (function() { %output%; return lodash; })();" \
       exports=global \
       --output build/lodash.custom.js && \
