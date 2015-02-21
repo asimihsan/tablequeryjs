@@ -233,6 +233,14 @@ tablequery._.extend(tablequery, (function() {
         selector.css("display", "");
     }
 
+    tablequery.set_filter = function(text, callback) {
+        table_search_text.val(text);
+        tablequery._table_search_text_on_keyup(undefined, text);
+        if (tablequery._.isFunction(callback)) {
+            callback();
+        }
+    }
+
     var previous_query_failed;
     tablequery.set_table_search_text = function(selector) {
         table_search_text = $(selector);
