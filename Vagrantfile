@@ -1,9 +1,9 @@
 Vagrant.configure(2) do |config|
   config.vm.box = "hashicorp/precise32"
-  config.vm.provision "shell", inline: <<-"SHELL"
+  config.vm.provision "shell", :privileged => false, inline: <<-"SHELL"
     # nodejs and npm
     sudo apt-get update
-    sudo apt-get install -y build-essential curl git fontconfig
+    sudo apt-get install -y build-essential curl git fontconfig openjdk-7-jre-headless
     curl -sL https://deb.nodesource.com/setup | sudo bash -
     sudo apt-get install -y nodejs
     sudo bash -c 'curl -L https://npmjs.org/install.sh | sh'
@@ -12,9 +12,8 @@ Vagrant.configure(2) do |config|
 
     # install grunt-cli bower, and jison without sudo
     echo 'export PATH=$HOME/local/bin:$HOME/npm/bin:$PATH' >> $HOME/.bashrc
+    echo 'npm config set prefix $HOME/npm' >> $HOME/.bashrc
     . $HOME/.bashrc
-    export PATH=$HOME/local/bin:$HOME/npm/bin:$PATH
-    npm config set prefix $HOME/npm
     rm -rf $HOME/npm
     mkdir -p $HOME/npm/bin
     npm cache clean
@@ -37,7 +36,7 @@ Vagrant.configure(2) do |config|
     cd $HOME/tablequeryjs
     rm -rf node_modules bower_components build
     npm install
-    bower install
+    yes yes | bower install
     lodash compat --development \
       include=once,keys,each,uniqueId,extend,intersection,filter,values,isUndefined,map,contains,memoize,debounce,functions,any \
       iife="var tablequery = tablequery || {}; tablequery._ = (function() { %output%; return lodash; })();" \
