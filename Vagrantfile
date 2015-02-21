@@ -4,28 +4,29 @@ Vagrant.configure(2) do |config|
     # nodejs and npm
     sudo apt-get update
     sudo apt-get install -y build-essential curl git fontconfig
-    echo 'export PATH=$HOME/local/bin:$HOME/npm/bin:$PATH' >> $HOME/.bashrc
-    . $HOME/.bashrc
-    mkdir $HOME/local
-    mkdir $HOME/node-latest-install
-    cd $HOME/node-latest-install
-    curl http://nodejs.org/dist/v0.12.0/node-v0.12.0.tar.gz | tar xz --strip-components=1
-    ./configure --prefix=$HOME/local
-    make install
-    curl -L https://npmjs.org/install.sh | sh
+    curl -sL https://deb.nodesource.com/setup | sudo bash -
+    sudo apt-get install -y nodejs
+    sudo bash -c 'curl -L https://npmjs.org/install.sh | sh'
     node -v
     npm -v
 
     # install grunt-cli bower, and jison without sudo
+    echo 'export PATH=$HOME/local/bin:$HOME/npm/bin:$PATH' >> $HOME/.bashrc
+    . $HOME/.bashrc
+    export PATH=$HOME/local/bin:$HOME/npm/bin:$PATH
     npm config set prefix $HOME/npm
     rm -rf $HOME/npm
     mkdir -p $HOME/npm/bin
     npm cache clean
-    npm install -g grunt-cli bower jison lodash-cli closurecompiler
+    npm install -g grunt-cli
     grunt --version
+    npm install -g bower
     bower --version
+    npm install -g jison
     jison --version
+    npm install -g lodash-cli
     lodash --version
+    npm install -g closurecompiler
     ccjs --version
 
     # copy then build tablequeryjs.
@@ -44,11 +45,9 @@ Vagrant.configure(2) do |config|
       --output build/lodash.custom.js && \
       sed -i 's/.*root._ = lodash;/\/\/root._ = lodash;/g' build/lodash.custom.js
     grunt build
-    ccjs build/tablequery.js > build/tablequery.min.js
     rm -rf /vagrant/build/
     mkdir -p /vagrant/build/
     cp build/tablequery*.js /vagrant/build/
-
     grunt test
   SHELL
 end
