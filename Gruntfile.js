@@ -27,7 +27,7 @@ module.exports = function(grunt) {
                 }
             },
             minify: {
-                command: '',
+                command: 'ccjs build/tablequery.js > build/tablequery.min.js',
                 options: {
                     stdout: true
                 }
