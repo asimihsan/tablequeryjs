@@ -241,6 +241,16 @@ tablequery._.extend(tablequery, (function() {
         table_parent = table.parent();
         table_tbody_rows = table.find("tbody tr");
         tablequery._update_table_lookups();
+        tablequery._get_rows_to_display.reset();
+    }
+
+    tablequery.refresh = function() {
+        table_tbody_rows = table.find("tbody tr");
+        tablequery._update_table_lookups();
+        tablequery._get_rows_to_display.reset();
+        if (table_search_text && table_search_text.length && tablequery._table_search_text_on_keyup) {
+            tablequery._table_search_text_on_keyup(undefined, table_search_text.val());
+        }
     }
 
     tablequery.hide_selector = function(selector) {
